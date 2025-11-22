@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+    name="FilmesService"
+    targetNamespace="http://localhost:5000/filmes"
+    xmlns:tns="http://localhost:5000/filmes"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <!-- ==========================
+         TYPES (SCHEMA)
+    ============================ -->
+    <types>
+        <xsd:schema targetNamespace="http://localhost:5000/filmes">
+
+            <!-- Tipo Filme -->
+            <xsd:complexType name="Filme">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:int"/>
+                    <xsd:element name="titulo" type="xsd:string"/>
+                    <xsd:element name="ano" type="xsd:string"/>
+                    <xsd:element name="pais" type="xsd:string"/>
+                    <xsd:element name="genero" type="xsd:string"/>
+                    <xsd:element name="review" type="xsd:string"/>
+                    <xsd:element name="nota" type="xsd:string"/>
+                    <xsd:element name="id_usuario" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Lista de Filmes -->
+            <xsd:complexType name="ListaFilmes">
+                <xsd:sequence>
+                    <xsd:element name="filme" type="tns:Filme" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Estatística por País -->
+            <xsd:complexType name="EstatisticaPais">
+                <xsd:sequence>
+                    <xsd:element name="pais" type="xsd:string"/>
+                    <xsd:element name="total" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ListaEstatisticaPais">
+                <xsd:sequence>
+                    <xsd:element name="paisEstatistica" type="tns:EstatisticaPais" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+        </xsd:schema>
+    </types>
+
+    <!-- ==========================
+         MESSAGES
+    ============================ -->
+
+    <!-- GET FILME -->
+    <message name="getFilmeRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+
+    <message name="getFilmeResponse">
+        <part name="filme" type="tns:Filme"/>
+    </message>
+
+    <!-- LISTAR FILMES -->
+    <message name="listarFilmesRequest"/>
+    <message name="listarFilmesResponse">
+        <part name="lista" type="tns:ListaFilmes"/>
+    </message>
+
+    <!-- LISTAR FILMES FILTRADOS -->
+    <message name="listarFilmesFiltradosRequest">
+        <part name="pais" type="xsd:string"/>
+        <part name="anoMinimo" type="xsd:string"/>
+        <part name="notaMinima" type="xsd:string"/>
+        <part name="usuarioId" type="xsd:string"/>
+    </message>
+
+    <message name="listarFilmesFiltradosResponse">
+        <part name="lista" type="tns:ListaFilmes"/>
+    </message>
+
+    <!-- ESTATISTICAS -->
+    <message name="estatisticasPorPaisRequest">
+        <part name="usuarioId" type="xsd:string"/>
+    </message>
+
+    <message name="estatisticasPorPaisResponse">
+        <part name="estatisticas" type="tns:ListaEstatisticaPais"/>
+    </message>
+
+    <!-- ==========================
+         PORT TYPE
+    ============================ -->
+    <portType name="FilmesPortType">
+
+        <operation name="getFilme">
+            <input message="tns:getFilmeRequest"/>
+            <output message="tns:getFilmeResponse"/>
+        </operation>
+
+        <operation name="listarFilmes">
+            <input message="tns:listarFilmesRequest"/>
+            <output message="tns:listarFilmesResponse"/>
+        </operation>
+
+        <operation name="listarFilmesFiltrados">
+            <input message="tns:listarFilmesFiltradosRequest"/>
+            <output message="tns:listarFilmesFiltradosResponse"/>
+        </operation>
+
+        <operation name="estatisticasPorPais">
+            <input message="tns:estatisticasPorPaisRequest"/>
+            <output message="tns:estatisticasPorPaisResponse"/>
+        </operation>
+
+    </portType>
+
+    <!-- ==========================
+         BINDING
+    ============================ -->
+    <binding name="FilmesBinding" type="tns:FilmesPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="getFilme">
+            <soap:operation soapAction="getFilme"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+        <operation name="listarFilmes">
+            <soap:operation soapAction="listarFilmes"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+        <operation name="listarFilmesFiltrados">
+            <soap:operation soapAction="listarFilmesFiltrados"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+        <operation name="estatisticasPorPais">
+            <soap:operation soapAction="estatisticasPorPais"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+
+    </binding>
+
+    <!-- ==========================
+         SERVICE
+    ============================ -->
+    <service name="FilmesService">
+        <port name="FilmesPort" binding="tns:FilmesBinding">
+            <soap:address location="http://localhost:5000/"/>
+        </port>
+    </service>
+
+</definitions>

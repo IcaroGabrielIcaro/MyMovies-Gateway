@@ -1,0 +1,10 @@
+<filme>
+    <id>2</id>
+    <titulo>Interstellar</titulo>
+    <ano>2014</ano>
+    <pais>Estados Unidos</pais>
+    <genero>Ficção Científica</genero>
+    <review>Uma jornada emocional com forte base científica.</review>
+    <nota>9.0</nota>
+    <id_usuario>101</id_usuario>
+</filme>

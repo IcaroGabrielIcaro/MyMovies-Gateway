@@ -1,0 +1,10 @@
+<filme>
+    <id>1</id>
+    <titulo>Parasite</titulo>
+    <ano>2019</ano>
+    <pais>Coreia do Sul</pais>
+    <genero>Drama</genero>
+    <review>Crítica social brilhante com narrativa impecável.</review>
+    <nota>9.5</nota>
+    <id_usuario>101</id_usuario>
+</filme>
