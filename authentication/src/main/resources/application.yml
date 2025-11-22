@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:app.pub
+
+
+jwt:
+  private:
+    key: "classpath:app.key"
+  public:
+    key: "classpath:app.pub"
