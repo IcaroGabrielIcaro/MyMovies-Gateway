@@ -1,4 +1,4 @@
-# 🎬 Movie Gateway System -- Microservices + SOAP + REST + Docker
+# Movie Gateway System -- Microservices + SOAP + REST + Docker
 
 Este projeto implementa um **gateway REST** em Spring Boot que integra:
 
@@ -10,7 +10,7 @@ Este projeto implementa um **gateway REST** em Spring Boot que integra:
 
 ------------------------------------------------------------------------
 
-## 📌 Arquitetura
+## Arquitetura
 
                        +----------------------+
                        |        CLIENTE       |
@@ -36,14 +36,14 @@ Este projeto implementa um **gateway REST** em Spring Boot que integra:
 
 ------------------------------------------------------------------------
 
-## 🚀 Como Rodar
+## Como Rodar
 
-### ✔️ Pré‑requisitos
+### Pré‑requisitos
 
 -   Docker
 -   Docker Compose
 
-### ✔️ Comando único para subir tudo
+### Comando único para subir tudo
 
 ``` bash
 docker compose up --build
@@ -59,9 +59,9 @@ Os serviços sobem automaticamente:
 
 ------------------------------------------------------------------------
 
-## 🌐 Endpoints Principais
+## Endpoints Principais
 
-### 🔐 **Auth via Gateway**
+### **Auth via Gateway**
 
 | Método  | Rota          |     Descrição |
 |--------|------------------|--------------------------|
@@ -79,7 +79,7 @@ Os serviços sobem automaticamente:
 | GET      | `/movies`              | Listar com filtros    |
 | GET      | `/movies/estatisticas` | Estatísticas por país |
 
-### 📄 **WSDL**
+### **WSDL**
 
 | Método  | Rota     | Descrição |
 |--------|---------|--------------------------------|
@@ -87,13 +87,13 @@ Os serviços sobem automaticamente:
 
 ------------------------------------------------------------------------
 
-## 📘 Documentação Swagger
+## Documentação Swagger
 
 Assim que o gateway estiver rodando:
 
-👉 **http://localhost:8080/swagger-ui.html**\
-ou\
-👉 **http://localhost:8080/swagger-ui/index.html**
+**http://localhost:8080/swagger-ui.html**
+<br>ou<br>
+**http://localhost:8080/swagger-ui/index.html**
 
 Aqui você encontra: - Descrição de cada endpoint\
 - Explicações de cada campo\
@@ -102,7 +102,7 @@ Aqui você encontra: - Descrição de cada endpoint\
 
 ------------------------------------------------------------------------
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
     /
     ├── authentication/     # Auth Service
@@ -113,7 +113,7 @@ Aqui você encontra: - Descrição de cada endpoint\
 
 ------------------------------------------------------------------------
 
-## 🧪 Testando Manualmente
+## Testando Manualmente
 
 ### Login
 
