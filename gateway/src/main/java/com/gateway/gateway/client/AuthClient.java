@@ -1,5 +1,6 @@
 package com.gateway.gateway.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +17,8 @@ public class AuthClient {
 
     private final RestTemplate restTemplate;
 
-    private final String BASE_URL = "http://localhost:8081/auth";
+    @Value("${services.auth.url}")
+    private String BASE_URL;
 
     public UserResponse register(RegisterRequest req) {
         return restTemplate.postForObject(

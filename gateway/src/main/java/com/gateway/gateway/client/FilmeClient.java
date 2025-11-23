@@ -1,5 +1,6 @@
 package com.gateway.gateway.client;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,7 +19,8 @@ public class FilmeClient {
     private final RestTemplate restTemplate;
     private final JwtUserExtractor jwtUserExtractor;
 
-    private final String SOAP_URL = "http://localhost:5000/";
+    @Value("${services.soap.url}")
+    private String SOAP_URL;
 
     private String send(String xml) {
         HttpHeaders headers = new HttpHeaders();
