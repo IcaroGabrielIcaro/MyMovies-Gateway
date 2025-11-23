@@ -132,4 +132,8 @@ GET http://localhost:8080/movies
 Authorization: Bearer <token>
 ```
 
+------------------------------------------------------------------------
 
+### Link Apresentação
+
+**[Canva](https://www.canva.com/design/DAG5dlyAd_o/kIuoQs0MXckR602osWwTuQ/edit?utm_content=DAG5dlyAd_o&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)**
