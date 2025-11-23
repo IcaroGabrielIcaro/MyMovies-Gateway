@@ -32,18 +32,18 @@ import lombok.RequiredArgsConstructor;
 public class GatewayFilmeController {
 
     private final FilmeGatewayService service;
-    private final FilmeModelAssembler assembler;
+    private final FilmeModelAssembler filmeAssembler;
 
     @PostMapping
     public EntityModel<FilmeResponse> inserir(@RequestBody FilmeRequest request) {
         FilmeResponse created = service.inserir(request);
-        return assembler.toModel(created);
+        return filmeAssembler.toModel(created);
     }
 
     @PutMapping("/{id}")
     public EntityModel<FilmeResponse> atualizar(@RequestBody FilmeRequest request, @PathVariable Integer id) {
         FilmeResponse updated = service.atualizar(request, id);
-        return assembler.toModel(updated);
+        return filmeAssembler.toModel(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -58,7 +58,7 @@ public class GatewayFilmeController {
     @GetMapping("/{id}")
     public EntityModel<FilmeResponse> getById(@PathVariable Integer id) {
         FilmeResponse f = service.getById(id);
-        return assembler.toModel(f);
+        return filmeAssembler.toModel(f);
     }
 
     @GetMapping
@@ -70,7 +70,7 @@ public class GatewayFilmeController {
         List<FilmeResponse> filmes = service.listarFiltrado(pais, anoMinimo, notaMinima);
 
         List<EntityModel<FilmeResponse>> models = filmes.stream()
-                .map(assembler::toModel)
+                .map(filmeAssembler::toModel)
                 .collect(Collectors.toList());
 
         CollectionModel<EntityModel<FilmeResponse>> collection = CollectionModel.of(models);
