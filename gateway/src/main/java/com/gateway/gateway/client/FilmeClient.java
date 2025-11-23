@@ -1,9 +1,13 @@
 package com.gateway.gateway.client;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -177,5 +181,20 @@ public class FilmeClient {
                 """.formatted(userId);
 
         return send(xml);
+    }
+
+    public String wsdl() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.TEXT_XML));
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                SOAP_URL + "/wsdl",
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        return response.getBody();
     }
 }
