@@ -10,6 +10,7 @@ import com.gateway.gateway.client.FilmeClient;
 import com.gateway.gateway.dto.filme.EstatisticaResponse;
 import com.gateway.gateway.dto.filme.FilmeRequest;
 import com.gateway.gateway.dto.filme.FilmeResponse;
+import com.gateway.gateway.dto.filme.WsdlResponse;
 import com.gateway.gateway.util.SoapXmlParser;
 
 import lombok.RequiredArgsConstructor;
@@ -80,6 +81,25 @@ public class FilmeGatewayService {
 
         return parser.getRepeating(doc, "paisEstatistica")
                 .stream().map(this::mapEstatistica).toList();
+    }
+
+    public WsdlResponse wsdl() {
+        String wsdl = client.wsdl();
+        Document doc = parser.parse(wsdl);
+        String serviceName = parser.getSingle(doc, "definitions", "name");
+        String portTypeName = parser.getSingle(doc, "portType", "name");
+
+        List<Document> opsDocs = parser.getRepeating(doc, "operation");
+        List<String> operations = opsDocs.stream()
+                .map(d -> parser.getAttribute(d, "name"))
+                .toList();
+
+        // 6. retorna a resposta
+        return new WsdlResponse(
+                serviceName,
+                portTypeName,
+                operations,
+                wsdl);
     }
 
     // ---- mappers ----
