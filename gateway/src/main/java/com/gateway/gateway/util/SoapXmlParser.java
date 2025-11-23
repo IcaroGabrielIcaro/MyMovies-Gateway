@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -55,5 +56,21 @@ public class SoapXmlParser {
             }
         }
         return docs;
+    }
+
+    public String getSingle(Document doc, String tagName, String attribute) {
+        NodeList list = doc.getElementsByTagName(tagName);
+        if (list.getLength() == 0)
+            return null;
+
+        Element el = (Element) list.item(0);
+        return el.getAttribute(attribute);
+    }
+
+    public String getAttribute(Document doc, String attribute) {
+        if (doc.getDocumentElement().hasAttribute(attribute)) {
+            return doc.getDocumentElement().getAttribute(attribute);
+        }
+        return null;
     }
 }
