@@ -7,14 +7,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Component;
 
 import com.gateway.gateway.controller.GatewayFilmeController;
-import com.gateway.gateway.dto.filme.FilmeResponse;
+import com.gateway.gateway.dto.filme.MovieResponse;
 
 @Component
-public class FilmeModelAssembler implements RepresentationModelAssembler<FilmeResponse, EntityModel<FilmeResponse>> {
+public class FilmeModelAssembler implements RepresentationModelAssembler<MovieResponse, EntityModel<MovieResponse>> {
 
     @Override
-    public EntityModel<FilmeResponse> toModel(FilmeResponse filme) {
-        EntityModel<FilmeResponse> model = EntityModel.of(filme,
+    public EntityModel<MovieResponse> toModel(MovieResponse filme) {
+        EntityModel<MovieResponse> model = EntityModel.of(filme,
                 linkTo(methodOn(GatewayFilmeController.class).getById(filme.getId())).withSelfRel(),
                 linkTo(methodOn(GatewayFilmeController.class).listar(null, null, null)).withRel("filmes"),
                 linkTo(methodOn(GatewayFilmeController.class).estatisticas()).withRel("estatisticas"));

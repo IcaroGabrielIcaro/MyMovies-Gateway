@@ -25,5 +25,5 @@ server:
 services:
   auth:
     url: ${AUTH_SERVICE_URL:http://localhost:8081}
-  soap:
-    url: ${SOAP_SERVICE_URL:http://localhost:5000}
+  movie:
+    url: ${MOVIE_SERVICE_URL:http://localhost:5000}

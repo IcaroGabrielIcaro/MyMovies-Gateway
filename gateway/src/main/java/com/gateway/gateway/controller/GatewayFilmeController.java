@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gateway.gateway.dto.filme.EstatisticaResponse;
 import com.gateway.gateway.dto.filme.FilmeRequest;
-import com.gateway.gateway.dto.filme.FilmeResponse;
+import com.gateway.gateway.dto.filme.MovieResponse;
 import com.gateway.gateway.service.FilmeGatewayService;
 import com.gateway.gateway.util.FilmeModelAssembler;
 
@@ -44,28 +44,28 @@ public class GatewayFilmeController {
 
     @Operation(summary = "Criar novo filme", description = "Envia um novo filme para o microserviço SOAP e retorna a representação HATEOAS do recurso criado.")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Filme criado com sucesso", content = @Content(schema = @Schema(implementation = FilmeResponse.class))),
+            @ApiResponse(responseCode = "201", description = "Filme criado com sucesso", content = @Content(schema = @Schema(implementation = MovieResponse.class))),
             @ApiResponse(responseCode = "400", description = "Requisição inválida ou campos faltando"),
             @ApiResponse(responseCode = "500", description = "Erro interno ao comunicar com o microserviço SOAP")
     })
     @PostMapping
-    public EntityModel<FilmeResponse> inserir(
+    public EntityModel<MovieResponse> inserir(
             @RequestBody @Schema(description = "Dados para criação do filme") FilmeRequest request) {
-        FilmeResponse created = service.inserir(request);
+        MovieResponse created = service.inserir(request);
         return filmeAssembler.toModel(created);
     }
 
     @Operation(summary = "Atualizar filme", description = "Atualiza os dados de um filme existente no microserviço SOAP.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso", content = @Content(schema = @Schema(implementation = FilmeResponse.class))),
+            @ApiResponse(responseCode = "200", description = "Filme atualizado com sucesso", content = @Content(schema = @Schema(implementation = MovieResponse.class))),
             @ApiResponse(responseCode = "404", description = "Filme não encontrado"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
     @PutMapping("/{id}")
-    public EntityModel<FilmeResponse> atualizar(
+    public EntityModel<MovieResponse> atualizar(
             @RequestBody @Schema(description = "Dados atualizados do filme") FilmeRequest request,
             @PathVariable @Parameter(description = "ID do filme a ser atualizado") Integer id) {
-        FilmeResponse updated = service.atualizar(request, id);
+        MovieResponse updated = service.atualizar(request, id);
         return filmeAssembler.toModel(updated);
     }
 
@@ -87,33 +87,33 @@ public class GatewayFilmeController {
 
     @Operation(summary = "Buscar filme por ID", description = "Retorna um único filme com base no ID informado.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Filme encontrado", content = @Content(schema = @Schema(implementation = FilmeResponse.class))),
+            @ApiResponse(responseCode = "200", description = "Filme encontrado", content = @Content(schema = @Schema(implementation = MovieResponse.class))),
             @ApiResponse(responseCode = "404", description = "Filme não encontrado")
     })
     @GetMapping("/{id}")
-    public EntityModel<FilmeResponse> getById(
+    public EntityModel<MovieResponse> getById(
             @PathVariable @Parameter(description = "ID do filme") Integer id) {
-        FilmeResponse f = service.getById(id);
+        MovieResponse f = service.getById(id);
         return filmeAssembler.toModel(f);
     }
 
     @Operation(summary = "Listar filmes", description = "Retorna lista de filmes. Aceita filtros opcionais por país, ano mínimo e nota mínima.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(schema = @Schema(implementation = FilmeResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(schema = @Schema(implementation = MovieResponse.class)))
     })
     @GetMapping
-    public CollectionModel<EntityModel<FilmeResponse>> listar(
+    public CollectionModel<EntityModel<MovieResponse>> listar(
             @RequestParam(required = false) @Parameter(description = "Filtrar filmes por país") String pais,
             @RequestParam(required = false) @Parameter(description = "Filtrar filmes por ano mínimo") String anoMinimo,
             @RequestParam(required = false) @Parameter(description = "Filtrar filmes por nota mínima") String notaMinima) {
 
-        List<FilmeResponse> filmes = service.listarFiltrado(pais, anoMinimo, notaMinima);
+        List<MovieResponse> filmes = service.listarFiltrado(pais, anoMinimo, notaMinima);
 
-        List<EntityModel<FilmeResponse>> models = filmes.stream()
+        List<EntityModel<MovieResponse>> models = filmes.stream()
                 .map(filmeAssembler::toModel)
                 .collect(Collectors.toList());
 
-        CollectionModel<EntityModel<FilmeResponse>> collection = CollectionModel.of(models);
+        CollectionModel<EntityModel<MovieResponse>> collection = CollectionModel.of(models);
 
         collection.add(linkTo(methodOn(GatewayFilmeController.class).inserir(null)).withRel("criar"));
         collection.add(linkTo(methodOn(GatewayFilmeController.class).estatisticas()).withRel("estatisticas"));

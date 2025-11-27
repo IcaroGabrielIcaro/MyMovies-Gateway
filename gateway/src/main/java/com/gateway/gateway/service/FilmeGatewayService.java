@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
-import com.gateway.gateway.client.FilmeClient;
+import com.gateway.gateway.client.MovieClient;
 import com.gateway.gateway.dto.filme.EstatisticaResponse;
 import com.gateway.gateway.dto.filme.FilmeRequest;
-import com.gateway.gateway.dto.filme.FilmeResponse;
+import com.gateway.gateway.dto.filme.MovieResponse;
 import com.gateway.gateway.dto.filme.WsdlResponse;
 import com.gateway.gateway.util.SoapXmlParser;
 
@@ -19,17 +19,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FilmeGatewayService {
 
-    private final FilmeClient client;
+    private final MovieClient client;
     private final SoapXmlParser parser;
 
-    public FilmeResponse inserir(FilmeRequest request) {
+    public MovieResponse inserir(FilmeRequest request) {
         String xml = client.inserir(request);
         Document doc = parser.parse(xml);
 
         return mapFilme(parser.getRepeating(doc, "filme").get(0));
     }
 
-    public FilmeResponse atualizar(FilmeRequest request, Integer id) {
+    public MovieResponse atualizar(FilmeRequest request, Integer id) {
         String xml = client.atualizar(request, id);
         Document doc = parser.parse(xml);
 
@@ -48,7 +48,7 @@ public class FilmeGatewayService {
                 "mensagem", mensagem);
     }
 
-    public FilmeResponse getById(Integer id) {
+    public MovieResponse getById(Integer id) {
         String xml = client.getById(id);
         Document doc = parser.parse(xml);
 
@@ -59,7 +59,7 @@ public class FilmeGatewayService {
         return mapFilme(filmes.get(0));
     }
 
-    public List<FilmeResponse> listarTodos() {
+    public List<MovieResponse> listarTodos() {
         String xml = client.listarTodos();
         Document doc = parser.parse(xml);
 
@@ -67,7 +67,7 @@ public class FilmeGatewayService {
                 .stream().map(this::mapFilme).toList();
     }
 
-    public List<FilmeResponse> listarFiltrado(String pais, String anoMinimo, String notaMinima) {
+    public List<MovieResponse> listarFiltrado(String pais, String anoMinimo, String notaMinima) {
         String xml = client.listarFiltrado(pais, anoMinimo, notaMinima);
         Document doc = parser.parse(xml);
 
@@ -104,8 +104,8 @@ public class FilmeGatewayService {
 
     // ---- mappers ----
 
-    private FilmeResponse mapFilme(Document doc) {
-        return new FilmeResponse(
+    private MovieResponse mapFilme(Document doc) {
+        return new MovieResponse(
                 Integer.valueOf(parser.getText(doc, "id")),
                 parser.getText(doc, "titulo"),
                 parser.getText(doc, "ano"),
