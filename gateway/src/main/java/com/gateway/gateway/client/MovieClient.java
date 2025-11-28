@@ -39,7 +39,7 @@ public class MovieClient {
             Integer duracao,
             Boolean favorito) {
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/api/movies/");
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(BASE_URL + "/api/movies/");
 
         if (nome != null)
             uriBuilder.queryParam("nome", nome);
