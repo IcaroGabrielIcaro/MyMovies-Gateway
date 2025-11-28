@@ -2,12 +2,9 @@ package com.gateway.gateway.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gateway.gateway.client.MovieClient;
 import com.gateway.gateway.dto.filme.MovieRequest;
 import com.gateway.gateway.dto.filme.MovieResponse;
-import com.gateway.gateway.util.FilmeModelAssembler;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 public class GatewayMovieController {
 
         private final MovieClient client;
-        private final FilmeModelAssembler filmeAssembler;
 
         @Operation(summary = "Criar novo filme", description = "Envia um novo filme para o microserviço SOAP e retorna a representação HATEOAS do recurso criado.")
         @ApiResponses({
@@ -49,10 +44,11 @@ public class GatewayMovieController {
                         @ApiResponse(responseCode = "500", description = "Erro interno ao comunicar com o microserviço SOAP")
         })
         @PostMapping
-        public EntityModel<MovieResponse> inserir(
-                        @Parameter(description = "Dados para criação do filme", required = true) @RequestBody MovieRequest request) {
-                MovieResponse created = client.criar(request);
-                return filmeAssembler.toModel(created);
+        public MovieResponse inserir(
+                        @Parameter(description = "Dados para criação do filme", required = true) @RequestBody MovieRequest request,
+                        @AuthenticationPrincipal Jwt jwt) {
+                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                return client.criar(request, idUsuario);
         }
 
         @Operation(summary = "Atualizar filme", description = "Atualiza os dados de um filme existente no microserviço SOAP.")
@@ -62,11 +58,12 @@ public class GatewayMovieController {
                         @ApiResponse(responseCode = "400", description = "Dados inválidos")
         })
         @PutMapping("/{id}")
-        public EntityModel<MovieResponse> atualizar(
+        public MovieResponse atualizar(
                         @Parameter(description = "Dados atualizados do filme", required = true) @RequestBody MovieRequest request,
-                        @Parameter(description = "ID do filme a ser atualizado", required = true) @PathVariable Long id) {
-                MovieResponse updated = client.atualizar(id, request);
-                return filmeAssembler.toModel(updated);
+                        @Parameter(description = "ID do filme a ser atualizado", required = true) @PathVariable Long id,
+                        @AuthenticationPrincipal Jwt jwt) {
+                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                return client.atualizar(id, request, idUsuario);
         }
 
         @Operation(summary = "Excluir filme", description = "Remove um filme pelo ID e retorna link para listagem.")
@@ -75,14 +72,11 @@ public class GatewayMovieController {
                         @ApiResponse(responseCode = "404", description = "Filme não encontrado")
         })
         @DeleteMapping("/{id}")
-        public EntityModel<?> deletar(
+        public Map<String, String> deletar(
                         @Parameter(description = "ID do filme a ser deletado", required = true) @PathVariable Long id) {
                 client.deletar(id);
 
-                return EntityModel.of(
-                                Map.of("message", "deletado"),
-                                linkTo(methodOn(GatewayMovieController.class).listar(null, null, null))
-                                                .withRel("filmes"));
+                return Map.of("message", "deletado");
         }
 
         @Operation(summary = "Buscar filme por ID", description = "Retorna um único filme com base no ID informado.")
@@ -91,33 +85,35 @@ public class GatewayMovieController {
                         @ApiResponse(responseCode = "404", description = "Filme não encontrado")
         })
         @GetMapping("/{id}")
-        public EntityModel<MovieResponse> getById(
+        public MovieResponse getById(
                         @Parameter(description = "ID do filme a ser buscado", required = true) @PathVariable Long id) {
-                MovieResponse f = client.pegar(id);
-                return filmeAssembler.toModel(f);
+                return client.pegar(id);
         }
 
-        @Operation(summary = "Listar filmes", description = "Retorna lista de filmes. Aceita filtros opcionais por país, ano mínimo e nota mínima.")
+        @Operation(summary = "Listar filmes", description = "Retorna lista de filmes com filtros opcionais")
         @ApiResponses({
                         @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso", content = @Content(schema = @Schema(implementation = MovieResponse.class)))
         })
         @GetMapping
-        public CollectionModel<EntityModel<MovieResponse>> listar(
-                        @Parameter(description = "Filtrar filmes por país") @RequestParam(required = false) String pais,
-                        @Parameter(description = "Filtrar filmes por ano mínimo") @RequestParam(required = false) String anoMinimo,
-                        @Parameter(description = "Filtrar filmes por nota mínima") @RequestParam(required = false) String notaMinima) {
-
-                List<MovieResponse> filmes = client.listar();
-
-                List<EntityModel<MovieResponse>> models = filmes.stream()
-                                .map(filmeAssembler::toModel)
-                                .collect(Collectors.toList());
-
-                CollectionModel<EntityModel<MovieResponse>> collection = CollectionModel.of(models);
-
-                collection.add(linkTo(methodOn(GatewayMovieController.class).inserir(null)).withRel("criar"));
-
-                return collection;
+        public List<MovieResponse> listar(
+                        @Parameter(description = "Filtrar por nome") @RequestParam(required = false) String nome,
+                        @Parameter(description = "Filtrar por diretor") @RequestParam(required = false) String diretor,
+                        @Parameter(description = "Filtrar por gênero") @RequestParam(required = false) String genero,
+                        @Parameter(description = "Filtrar por nacionalidade") @RequestParam(required = false) String nacionalidade,
+                        @Parameter(description = "Filtrar por ano") @RequestParam(required = false) Integer ano,
+                        @Parameter(description = "Filtrar por duração") @RequestParam(required = false) Integer duracao,
+                        @Parameter(description = "Filtrar por favorito") @RequestParam(required = false) Boolean favorito,
+                        @AuthenticationPrincipal Jwt jwt) {
+                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                return client.listarComFiltros(
+                                nome,
+                                diretor,
+                                genero,
+                                nacionalidade,
+                                ano,
+                                idUsuario,
+                                duracao,
+                                favorito);
         }
 
         @Operation(summary = "Favoritar/Desfavoritar filme", description = "Marca ou desmarca um filme como favorito.")
@@ -126,10 +122,9 @@ public class GatewayMovieController {
                         @ApiResponse(responseCode = "404", description = "Filme não encontrado")
         })
         @PatchMapping("/{id}/favorito")
-        public EntityModel<MovieResponse> favoritar(
+        public MovieResponse favoritar(
                         @Parameter(description = "ID do filme a ser atualizado", required = true) @PathVariable Long id,
                         @Parameter(description = "Definir se o filme é favorito (true/false)", required = true) @RequestParam boolean favorito) {
-                MovieResponse updated = client.favoritar(id, favorito);
-                return filmeAssembler.toModel(updated);
+                return client.favoritar(id, favorito);
         }
 }

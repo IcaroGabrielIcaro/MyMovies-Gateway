@@ -10,14 +10,21 @@ import lombok.NoArgsConstructor;
 public class MovieResponse {
     private Long id;
     private String nome;
+    private String diretor;
     private String review;
+    private String genero;
+
     private Integer nota;
-    private String dataAssistida;
+
+    private String data_assistida;
+
+    private Integer duracao;
+
     private Boolean favorito;
     private String foto;
-    private String temas;
-    private Integer ano;
     private String poster;
+    private Integer ano;
     private String nacionalidade;
-    private Integer id_usuario;
+
+    private Long id_usuario;
 }

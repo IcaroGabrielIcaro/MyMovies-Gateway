@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Authentication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gateway.gateway.dto.filme.MovieRequest;
 import com.gateway.gateway.dto.filme.MovieResponse;
@@ -30,22 +29,69 @@ public class MovieClient {
     @Value("${services.movie.url}")
     private String BASE_URL;
 
-    public List<MovieResponse> listar() {
+    public List<MovieResponse> listarComFiltros(
+            String nome,
+            String diretor,
+            String genero,
+            String nacionalidade,
+            Integer ano,
+            Long idUsuario,
+            Integer duracao,
+            Boolean favorito) {
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(BASE_URL + "/api/movies/");
+
+        if (nome != null)
+            uriBuilder.queryParam("nome", nome);
+
+        if (diretor != null)
+            uriBuilder.queryParam("diretor", diretor);
+
+        if (genero != null)
+            uriBuilder.queryParam("genero", genero);
+
+        if (nacionalidade != null)
+            uriBuilder.queryParam("nacionalidade", nacionalidade);
+
+        if (ano != null)
+            uriBuilder.queryParam("ano", ano);
+
+        if (idUsuario != null)
+            uriBuilder.queryParam("id_usuario", idUsuario);
+
+        if (duracao != null)
+            uriBuilder.queryParam("duracao", duracao);
+
+        if (favorito != null)
+            uriBuilder.queryParam("favorito", favorito);
+
         ResponseEntity<MovieResponse[]> response = restTemplate.getForEntity(
-                BASE_URL + "/api/movies/",
+                uriBuilder.toUriString(),
                 MovieResponse[].class);
+
         return Arrays.asList(response.getBody());
     }
 
-    public MovieResponse criar(MovieRequest req) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+    public MovieResponse criar(MovieRequest req, Long idUsuario) {
 
-        HttpEntity<MovieRequest> entity = new HttpEntity<>(req, headers);
+        Map<String, Object> body = new HashMap<>();
+        body.put("nome", req.getNome());
+        body.put("diretor", req.getDiretor());
+        body.put("review", req.getReview());
+        body.put("genero", req.getGenero());
+        body.put("nota", req.getNota());
+        body.put("data_assistida", req.getData_assistida() != null ? req.getData_assistida().toString() : null);
+        body.put("duracao", req.getDuracao());
+        body.put("favorito", req.isFavorito());
+        body.put("foto", req.getFoto());
+        body.put("poster", req.getPoster());
+        body.put("ano", req.getAno());
+        body.put("nacionalidade", req.getNacionalidade());
+        body.put("id_usuario", idUsuario);
 
         ResponseEntity<MovieResponse> response = restTemplate.postForEntity(
                 BASE_URL + "/api/movies/",
-                entity,
+                body,
                 MovieResponse.class);
 
         return response.getBody();
@@ -57,12 +103,27 @@ public class MovieClient {
                 MovieResponse.class);
     }
 
-    public MovieResponse atualizar(Long id, MovieRequest req) {
+    public MovieResponse atualizar(Long id, MovieRequest req, Long idUsuario) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("nome", req.getNome());
+        body.put("diretor", req.getDiretor());
+        body.put("review", req.getReview());
+        body.put("genero", req.getGenero());
+        body.put("nota", req.getNota());
+        body.put("data_assistida", req.getData_assistida() != null ? req.getData_assistida().toString() : null);
+        body.put("duracao", req.getDuracao());
+        body.put("favorito", req.isFavorito());
+        body.put("foto", req.getFoto());
+        body.put("poster", req.getPoster());
+        body.put("ano", req.getAno());
+        body.put("nacionalidade", req.getNacionalidade());
+        body.put("id_usuario", idUsuario);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<MovieRequest> entity = new HttpEntity<>(req, headers);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<MovieResponse> response = restTemplate.exchange(
                 BASE_URL + "/api/movies/" + id + "/",

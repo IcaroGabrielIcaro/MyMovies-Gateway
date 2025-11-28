@@ -6,7 +6,11 @@ SECRET_KEY = 'django-insecure-o7d_q+eh0nu7b9^_c%$tm5!@wvlt@cur!r_z$7euqvovckxy+*
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'movie-service',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
