@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gateway.gateway.client.MovieClient;
+import com.gateway.gateway.dto.filme.LikeResponse;
 import com.gateway.gateway.dto.filme.MovieRequest;
 import com.gateway.gateway.dto.filme.MovieResponse;
+import com.gateway.gateway.dto.filme.StatusResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -126,5 +129,43 @@ public class GatewayMovieController {
                         @Parameter(description = "ID do filme a ser atualizado", required = true) @PathVariable Long id,
                         @Parameter(description = "Definir se o filme é favorito (true/false)", required = true) @RequestParam boolean favorito) {
                 return client.favoritar(id, favorito);
+        }
+
+        @Operation(summary = "Curtir filme", description = "Adiciona uma curtida a um filme por um usuário.")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "201", description = "Filme curtido com sucesso", content = @Content(schema = @Schema(implementation = LikeResponse.class))),
+                        @ApiResponse(responseCode = "200", description = "Filme já estava curtido", content = @Content(schema = @Schema(implementation = LikeResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Filme não encontrado")
+        })
+        @PostMapping("/{id}/like")
+        public StatusResponse curtir(
+                        @Parameter(description = "ID do filme a ser curtido", required = true) @PathVariable Long id,
+                        @AuthenticationPrincipal Jwt jwt) {
+                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                return client.curtir(id, idUsuario);
+        }
+
+        @Operation(summary = "Descurtir filme", description = "Remove a curtida de um filme por um usuário.")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "Filme descurtido com sucesso", content = @Content(schema = @Schema(implementation = LikeResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Filme não encontrado")
+        })
+        @DeleteMapping("/{id}/like")
+        public StatusResponse descurtir(
+                        @Parameter(description = "ID do filme a ser descurtido", required = true) @PathVariable Long id,
+                        @AuthenticationPrincipal Jwt jwt) {
+                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                return client.descurtir(id, idUsuario);
+        }
+
+        @Operation(summary = "Listar curtidas do filme", description = "Retorna todas as curtidas de um filme.")
+        @ApiResponses({
+                        @ApiResponse(responseCode = "200", description = "Lista de curtidas retornada com sucesso", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LikeResponse.class)))),
+                        @ApiResponse(responseCode = "404", description = "Filme não encontrado")
+        })
+        @GetMapping("/{id}/likes")
+        public List<LikeResponse> listarCurtidas(
+                        @Parameter(description = "ID do filme", required = true) @PathVariable Long id) {
+                return client.listarCurtidas(id);
         }
 }

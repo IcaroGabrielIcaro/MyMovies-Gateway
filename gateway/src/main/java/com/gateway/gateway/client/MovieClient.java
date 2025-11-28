@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.gateway.gateway.dto.filme.LikeResponse;
+import com.gateway.gateway.dto.filme.StatusResponse;
 import com.gateway.gateway.dto.filme.MovieRequest;
 import com.gateway.gateway.dto.filme.MovieResponse;
 
@@ -153,6 +156,58 @@ public class MovieClient {
                 HttpMethod.PATCH,
                 entity,
                 MovieResponse.class);
+
+        return response.getBody();
+    }
+
+    public StatusResponse curtir(Long id_filme, Long id_usuario) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("id_usuario", id_usuario);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<StatusResponse> response = restTemplate.exchange(
+                BASE_URL + "/api/movies/" + id_filme + "/like/",
+                HttpMethod.POST,
+                entity,
+                StatusResponse.class);
+
+        return response.getBody();
+    }
+
+    public StatusResponse descurtir(Long id_filme, Long id_usuario) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("id_usuario", id_usuario);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<StatusResponse> response = restTemplate.exchange(
+                BASE_URL + "/api/movies/" + id_filme + "/like/",
+                HttpMethod.DELETE,
+                entity,
+                StatusResponse.class);
+
+        return response.getBody();
+    }
+
+    public List<LikeResponse> listarCurtidas(Long id_filme) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<List<LikeResponse>> response = restTemplate.exchange(
+                BASE_URL + "/api/movies/" + id_filme + "/likes/",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<LikeResponse>>() {
+                });
 
         return response.getBody();
     }

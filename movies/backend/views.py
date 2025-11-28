@@ -75,16 +75,13 @@ class MovieViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
     
-    @action(detail=True, methods=['post'], url_path='like')
+    @action(detail=True, methods=['post'], url_path='like', serializer_class=LikeActionSerializer)
     def like(self, request, pk=None):
         serializer = LikeActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         movie = self.get_object()
-        user_id = request.data.get("id_usuario")
-
-        if not user_id:
-            return Response({"error": "id_usuario é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        user_id = serializer.validated_data["id_usuario"]
 
         like, created = Like.objects.get_or_create(filme=movie, id_usuario=user_id)
 
@@ -93,16 +90,13 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return Response({"status": "já curtido"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['delete'], url_path='like')
+    @action(detail=True, methods=['delete'], url_path='like', serializer_class=LikeActionSerializer)
     def unlike(self, request, pk=None):
         serializer = LikeActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
         movie = self.get_object()
-        user_id = request.data.get("id_usuario")
-
-        if not user_id:
-            return Response({"error": "id_usuario é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        user_id = serializer.validated_data["id_usuario"]
 
         deleted, _ = Like.objects.filter(filme=movie, id_usuario=user_id).delete()
 
@@ -111,7 +105,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         return Response({"status": "não estava curtido"}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['get'], url_path='likes')
+    @action(detail=True, methods=['get'], url_path='likes', serializer_class=LikeSerializer)
     def get_likes(self, request, pk=None):
         movie = self.get_object()
         likes = movie.likes.all()
