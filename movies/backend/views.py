@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import Movie
-from .serializers import MovieSerializer
+from .models import Movie, Like
+from .serializers import MovieSerializer, LikeSerializer, LikeActionSerializer
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
@@ -74,3 +74,46 @@ class MovieViewSet(viewsets.ModelViewSet):
             {"message": "Favorito atualizado com sucesso!", "favorito": movie.favorito},
             status=status.HTTP_200_OK
         )
+    
+    @action(detail=True, methods=['post'], url_path='like')
+    def like(self, request, pk=None):
+        serializer = LikeActionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        movie = self.get_object()
+        user_id = request.data.get("id_usuario")
+
+        if not user_id:
+            return Response({"error": "id_usuario é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+        like, created = Like.objects.get_or_create(filme=movie, id_usuario=user_id)
+
+        if created:
+            return Response({"status": "curtido"}, status=status.HTTP_201_CREATED)
+
+        return Response({"status": "já curtido"}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['delete'], url_path='like')
+    def unlike(self, request, pk=None):
+        serializer = LikeActionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        movie = self.get_object()
+        user_id = request.data.get("id_usuario")
+
+        if not user_id:
+            return Response({"error": "id_usuario é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+        deleted, _ = Like.objects.filter(filme=movie, id_usuario=user_id).delete()
+
+        if deleted:
+            return Response({"status": "descurtido"}, status=status.HTTP_200_OK)
+
+        return Response({"status": "não estava curtido"}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'], url_path='likes')
+    def get_likes(self, request, pk=None):
+        movie = self.get_object()
+        likes = movie.likes.all()
+        serializer = LikeSerializer(likes, many=True)
+        return Response(serializer.data)

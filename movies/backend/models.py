@@ -42,3 +42,18 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.nome} ({self.ano})" if self.ano else self.nome
+
+
+class Like(models.Model):
+    id_usuario = models.IntegerField("id do usuário", db_index=True)
+    filme = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="likes")
+
+    created_at = models.DateTimeField("criado em", auto_now_add=True)
+    updated_at = models.DateTimeField("atualizado em", auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["id_usuario", "filme"], name="unique_user_movie_like")]
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Like: User {self.id_usuario} - Movie {self.filme.nome}"
