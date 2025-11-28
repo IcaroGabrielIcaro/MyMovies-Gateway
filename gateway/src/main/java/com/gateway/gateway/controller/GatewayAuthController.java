@@ -14,6 +14,7 @@ import com.gateway.gateway.dto.auth.TokenResponse;
 import com.gateway.gateway.dto.auth.UserResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,7 +39,7 @@ public class GatewayAuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse register(
-            @RequestBody @Schema(description = "Dados para criação de um novo usuário") RegisterRequest request) {
+            @Parameter(description = "Dados para criação de um novo usuário", required = true) @RequestBody RegisterRequest request) {
         return authclient.register(request);
     }
 
@@ -51,7 +52,7 @@ public class GatewayAuthController {
     })
     @PostMapping("/login")
     public TokenResponse login(
-            @RequestBody @Schema(description = "Credenciais de autenticação") LoginRequest request) {
+            @Parameter(description = "Credenciais de autenticação", required = true) @RequestBody LoginRequest request) {
         return authclient.login(request);
     }
 }

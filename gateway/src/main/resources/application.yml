@@ -26,4 +26,4 @@ services:
   auth:
     url: ${AUTH_SERVICE_URL:http://localhost:8081}
   movie:
-    url: ${MOVIE_SERVICE_URL:http://localhost:5000}
+    url: ${MOVIE_SERVICE_URL:http://localhost:8000}

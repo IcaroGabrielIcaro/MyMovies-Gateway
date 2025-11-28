@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieResponse {
-    private Integer id;
+    private Long id;
     private String nome;
     private String review;
     private Integer nota;
