@@ -8,9 +8,19 @@ spring:
         jwt:
           public-key-location: classpath:app.pub
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
 
 jwt:
   private:
     key: "classpath:app.key"
   public:
     key: "classpath:app.pub"
+
+openapi:
+  server-url: ${OPENAPI_SERVER_URL:http://localhost:8081}
