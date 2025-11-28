@@ -6,7 +6,11 @@ SECRET_KEY = 'django-insecure-fodz@&^uw_urz0x*ns4$)lg!q%gp+@22hsxqbb#0!)_gtj-3kr
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "movie-service"
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +27,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'movies.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,3 +89,17 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Insira o token no formato: Bearer <seu_token_jwt>'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+}
