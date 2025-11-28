@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gateway.gateway.dto.filme.LikeResponse;
 import com.gateway.gateway.dto.filme.StatusResponse;
+import com.gateway.gateway.dto.notification.NotificationRequest;
 import com.gateway.gateway.dto.filme.MovieRequest;
 import com.gateway.gateway.dto.filme.MovieResponse;
 
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class MovieClient {
 
     private final RestTemplate restTemplate;
+    private final NotificationClient notificationClient;
 
     @Value("${services.movie.url}")
     private String BASE_URL;
@@ -175,7 +177,20 @@ public class MovieClient {
                 entity,
                 StatusResponse.class);
 
-        return response.getBody();
+        StatusResponse status = response.getBody();
+
+        if (status != null && "curtido".equals(status.getStatus())) {
+
+            NotificationRequest notification = new NotificationRequest();
+            notification.setCurtidorId(status.getCurtidorId());
+            notification.setFilmeId(status.getFilmeId());
+            notification.setDestinatarioId(status.getDestinatarioId());
+            notification.setTipo(status.getTipo());
+
+            notificationClient.enviarNotificacao(notification);
+        }
+
+        return status;
     }
 
     public StatusResponse descurtir(Long id_filme, Long id_usuario) {

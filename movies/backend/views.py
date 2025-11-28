@@ -86,7 +86,13 @@ class MovieViewSet(viewsets.ModelViewSet):
         like, created = Like.objects.get_or_create(filme=movie, id_usuario=user_id)
 
         if created:
-            return Response({"status": "curtido"}, status=status.HTTP_201_CREATED)
+            return Response({
+                "status": "curtido",
+                "curtidorId": user_id,
+                "filmeId": movie.id,
+                "destinatarioId": movie.id_usuario,
+                "tipo": "FILME_CURTIDO"
+            }, status=status.HTTP_201_CREATED)
 
         return Response({"status": "já curtido"}, status=status.HTTP_200_OK)
 

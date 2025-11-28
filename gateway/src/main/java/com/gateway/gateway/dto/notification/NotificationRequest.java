@@ -1,15 +1,13 @@
-package com.gateway.gateway.dto.filme;
+package com.gateway.gateway.dto.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class StatusResponse {
-    private String status;
-
+@NoArgsConstructor
+public class NotificationRequest {
     private Long curtidorId;
     private Long filmeId;
     private Long destinatarioId;

@@ -27,3 +27,5 @@ services:
     url: ${AUTH_SERVICE_URL:http://localhost:8081}
   movie:
     url: ${MOVIE_SERVICE_URL:http://localhost:8000}
+  notification:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:3003}

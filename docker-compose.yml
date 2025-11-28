@@ -29,6 +29,15 @@ services:
       retries: 3
       start_period: 40s
 
+  notification-service:
+    build: ./notification
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+    networks:
+      - mynetwork
+
   gateway-service:
     build: ./gateway
     ports:
@@ -38,6 +47,7 @@ services:
       - SERVER_PORT=8080
       - AUTH_SERVICE_URL=http://auth-service:8081/auth
       - MOVIE_SERVICE_URL=http://movie-service:8000
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3003
     depends_on:
       - auth-service
       - movie-service
