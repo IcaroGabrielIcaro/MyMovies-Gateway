@@ -2,11 +2,11 @@ import { Component, inject, signal } from "@angular/core";
 import { Field, form } from "@angular/forms/signals";
 import { AuthService } from "../../services/auth/auth.service";
 import { RegisterRequest } from "../../models/auth/RegisterRequest.model";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-cadastro',
-    imports: [Field],
+    imports: [Field, RouterLink],
     templateUrl: `cadastro.component.html`
 })
 export class CadastroComponent {

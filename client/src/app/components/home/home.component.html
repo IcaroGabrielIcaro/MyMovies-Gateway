@@ -1,3 +1,20 @@
-<h1 class="text-9xl font-bold underline">
-  Hello world!
-</h1>
+<div class="flex bg-slate-950 min-h-screen">
+  @if (isLogged) {
+    <app-sidebar class="fixed top-0 left-0 h-screen z-50"></app-sidebar>
+  }
+
+    @if (isLogged) {
+      <div class="flex flex-col flex-1 ml-20 min-h-screen">
+        <app-header></app-header>
+        <main class="flex-1 p-10 overflow-y-auto">
+          <h1>OIII</h1>
+        </main>
+      </div>
+    } @else {
+      <div class="flex flex-col flex-1 min-h-screen">
+        <main class="flex-1 overscroll-y-auto">
+          <app-boas-vindas-deslogado></app-boas-vindas-deslogado>
+        </main>
+      </div>
+    }
+</div>

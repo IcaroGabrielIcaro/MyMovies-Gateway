@@ -2,11 +2,11 @@ import { Component, inject, signal } from "@angular/core";
 import { AuthService } from "../../services/auth/auth.service";
 import { Field, form } from '@angular/forms/signals'
 import { LoginRequest } from "../../models/auth/LoginRequest.model";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-login',
-    imports: [Field],
+    imports: [Field, RouterLink],
     templateUrl: `login.component.html`
 })
 export class LoginComponent {

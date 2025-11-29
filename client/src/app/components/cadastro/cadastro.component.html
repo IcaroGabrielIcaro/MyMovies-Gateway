@@ -1,27 +1,54 @@
-<div class="min-h-screen bg-gray-100 flex items-center justify-center">
-  <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
-    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">
-      Cadastro
-    </h1>
+<div class="relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden">
 
-    <div class="flex flex-col gap-4">
+  <div class="absolute inset-0 bg-slate-950 bg-opacity-60"></div>
 
-      <input type="text" placeholder="Usuário"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-        [field]="cadastroForm.username" />
+  <div class="relative z-10 w-full max-w-md">
 
-      <input type="email" placeholder="E-mail"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-        [field]="cadastroForm.email" />
+    <a routerLink="/" class="text-sm text-gray-300 hover:text-white transition block mb-4">
+      ← Voltar para o início
+    </a>
 
-      <input type="password" placeholder="Senha"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-        [field]="cadastroForm.password" />
+    <div class="backdrop-blur-xl bg-white/10 p-8 rounded-2xl shadow-xl border border-white/20">
 
-      <button (click)="register()" [disabled]="!cadastroForm().valid()" class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition">
-        Cadastrar
-      </button>
+      <h1 class="text-3xl font-extrabold text-center mb-6 text-white drop-shadow">
+        <span class="text-blue-400">MyMovies</span> — Cadastro
+      </h1>
+
+      <p class="text-gray-300 text-center mb-6 text-sm leading-relaxed">
+        Crie sua conta e comece sua jornada cinematográfica.<br />
+        Descubra filmes, salve favoritos e registre suas avaliações.
+      </p>
+
+      <div class="flex flex-col gap-4">
+
+        <input type="text" placeholder="Usuário" class="w-full px-4 py-2 bg-white/20 text-white placeholder-gray-300 
+            border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          [field]="cadastroForm.username" />
+
+        <input type="email" placeholder="E-mail" class="w-full px-4 py-2 bg-white/20 text-white placeholder-gray-300 
+            border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          [field]="cadastroForm.email" />
+
+        <input type="password" placeholder="Senha" class="w-full px-4 py-2 bg-white/20 text-white placeholder-gray-300
+            border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          [field]="cadastroForm.password" />
+
+        <button (click)="register()" [disabled]="!cadastroForm().valid()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold 
+            hover:bg-blue-700 disabled:bg-blue-500/40 disabled:cursor-not-allowed 
+            transition">
+          Cadastrar
+        </button>
+
+      </div>
+
+      <p class="text-center text-gray-300 text-sm mt-6">
+        Já possui uma conta?
+        <a routerLink="/login" class="text-blue-400 hover:text-blue-300 font-semibold">
+          Entrar
+        </a>
+      </p>
 
     </div>
   </div>
+
 </div>
