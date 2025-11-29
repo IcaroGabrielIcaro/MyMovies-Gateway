@@ -188,6 +188,17 @@ public class MovieClient {
             notification.setTipo(status.getTipo());
 
             notificationClient.enviarNotificacao(notification);
+
+            try {
+                notificationClient.enviarNotificacao(notification);
+            } catch (Exception e) {
+                restTemplate.exchange(
+                        BASE_URL + "/api/movies/" + id_filme + "/like/",
+                        HttpMethod.DELETE,
+                        entity,
+                        StatusResponse.class);
+                throw new RuntimeException("Falha ao notificar. Like desfeito.");
+            }
         }
 
         return status;
