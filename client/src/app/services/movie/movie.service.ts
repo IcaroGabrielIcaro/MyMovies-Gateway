@@ -1,10 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { MovieRequest } from "../models/movie/MovieRequest.model";
 import { map, Observable } from "rxjs";
-import { MovieResponse } from "../models/movie/MovieResponse.model";
-import { StatusResponse } from "../models/movie/StatusResponse.model";
-import { LikeResponse } from "../models/movie/LikeResponse.model";
+import { MovieRequest } from "../../models/movie/MovieRequest.model";
+import { MovieResponse } from "../../models/movie/MovieResponse.model";
+import { StatusResponse } from "../../models/movie/StatusResponse.model";
+import { LikeResponse } from "../../models/movie/LikeResponse.model";
 
 @Injectable({
     providedIn: 'root'

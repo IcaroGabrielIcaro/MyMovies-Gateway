@@ -1,0 +1,23 @@
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
+        <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">
+            LOGIN
+        </h1>
+
+        <div class="flex flex-col gap-4">
+            <input type="text" placeholder="Usuário"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                [field]="loginForm.username" />
+
+            <input type="password" placeholder="Senha"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                [field]="loginForm.password" />
+
+            <button (click)="login()" [disabled]="!loginForm().valid()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold 
+                hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed 
+                transition">
+                Entrar
+            </button>
+        </div>
+    </div>
+</div>
