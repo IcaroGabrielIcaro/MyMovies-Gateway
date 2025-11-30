@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import {  HeaderComponent } from "../header/header.component";
 import { SidebarComponent } from "../sidebar/sidebar.component";
 import { BoasVindasDeslogadoComponent } from "../boas-vindas-deslogado/boas-vindas-deslogado.component";
+import { BoasVindasLogadoComponent } from "../boas-vindas-logado/boas-vindas-logado.component";
 
 @Component({
     selector: 'app-home',
@@ -9,6 +10,7 @@ import { BoasVindasDeslogadoComponent } from "../boas-vindas-deslogado/boas-vind
         HeaderComponent,
         SidebarComponent,
         BoasVindasDeslogadoComponent,
+        BoasVindasLogadoComponent,
     ],
     templateUrl: `home.component.html`
 })

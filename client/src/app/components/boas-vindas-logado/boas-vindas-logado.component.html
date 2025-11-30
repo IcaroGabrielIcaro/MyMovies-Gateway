@@ -1,0 +1,89 @@
+<div class="relative w-full h-[70vh] bg-slate-950 overflow-hidden">
+
+    <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out"
+        [style.background-image]="'url(' + mainBannerUrl + ')'">
+    </div>
+
+    <div class="absolute inset-0 bg-linear-to-r 
+                from-slate-900/60 via-transparent to-slate-900/60 pointer-events-none"></div>
+
+    <div class="absolute inset-0 bg-linear-to-b 
+                from-transparent via-slate-950/80 to-slate-950 pointer-events-none"></div>
+
+    @if (slicedMovies.length > 0) {
+    <div class="absolute bottom-0 left-0 z-10 p-10">
+        <div class="bg-linear-to-t from-black/50 to-transparent p-6 rounded-tr-2xl max-w-full">
+
+            <h1 class="text-white text-6xl font-extrabold tracking-wide mb-2 drop-shadow-2xl">
+                {{ movieTitle || 'Título do Filme' }}
+            </h1>
+
+            <p class="text-gray-200 text-xl font-medium drop-shadow-md">
+                {{ currentMovie?.nacionalidade || 'Nacionalidade' }} • {{ currentMovie?.ano || '----' }}
+            </p>
+
+        </div>
+    </div>
+
+    <button
+        class="absolute top-0 left-0 z-10 m-10 bg-blue-500 text-white font-semibold px-11 py-3 rounded-lg shadow-md">
+        Detalhes
+    </button>
+    }
+
+    @if (slicedMovies.length > 0) {
+    <div class="absolute top-1/2 right-8 -translate-y-1/2 z-20 grid grid-cols-3 grid-rows-3 gap-3"
+        style="height: 90%; aspect-ratio: 4 / 3;">
+        @for (movie of slicedMovies; track $index) {
+        <app-filme-flutuante [movie]="movie" [index]="$index" [selectedMovieIndex]="selectedMovieIndex"
+            (trocarBanner)="trocarBanner($event.foto, $event.index)" />
+        }
+    </div>
+    } @else {
+    <div class="absolute inset-0 flex items-center justify-center">
+
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+        <div class="relative max-w-2xl text-center px-10 z-10">
+
+            <h1 class="text-5xl font-extrabold text-white mb-6 drop-shadow-lg">
+                Bem-vindo ao seu <span class="text-blue-400">Mural de Filmes</span>
+            </h1>
+
+            <p class="text-gray-200 text-lg leading-relaxed mb-6">
+                Aqui é onde sua jornada cinematográfica começa.
+                Quando você adicionar seus filmes, este espaço vai se transformar
+                num painel vivo mostrando suas histórias, memórias e avaliações.
+            </p>
+
+            <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                Conforme a comunidade também registra filmes, este mural será
+                atualizado constantemente com novos títulos, tendências e descobertas.
+            </p>
+
+            <p class="text-gray-300 text-lg leading-relaxed">
+                Você ainda não adicionou nenhum filme... mas isso muda agora.
+            </p>
+
+            <div class="mt-10">
+                <button routerLink="/filmes/novo" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white text-lg 
+                           font-semibold rounded-xl shadow-xl transition-all duration-300
+                           hover:scale-105">
+                    Registrar meu primeiro filme
+                </button>
+            </div>
+
+        </div>
+    </div>
+    }
+</div>
+
+<div class="mt-10 px-10 pb-10 space-y-20">
+    @if (movies.length > 0) {
+        <app-carrossel-filmes-home [filmes]="movies" titulo="Todos os Filmes"></app-carrossel-filmes-home>
+    }
+
+    @if (myMovies.length > 0) {
+        <app-carrossel-filmes-home [filmes]="myMovies" titulo="Meus Filmes"></app-carrossel-filmes-home>
+    }
+</div>

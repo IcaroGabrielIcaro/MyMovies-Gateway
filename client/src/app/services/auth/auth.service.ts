@@ -23,6 +23,7 @@ export class AuthService {
         .pipe(
             tap((response) => {
                 sessionStorage.setItem('token', response.token);
+                sessionStorage.setItem('id_usuario', response.userId.toString());
             })
         );
     }

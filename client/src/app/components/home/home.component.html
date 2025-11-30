@@ -1,13 +1,13 @@
 <div class="flex bg-slate-950 min-h-screen">
-  @if (!isLogged) {
+  @if (isLogged) {
     <app-sidebar class="fixed top-0 left-0 h-screen z-50"></app-sidebar>
   }
 
-    @if (!isLogged) {
+    @if (isLogged) {
       <div class="flex flex-col flex-1 ml-20 min-h-screen">
-        <app-header></app-header>
-        <main class="flex-1 p-10 overflow-y-auto">
-          <h1>OIII</h1>
+        <!-- <app-header></app-header> -->
+        <main class="flex-1 overflow-y-auto">
+          <app-boas-vindas-logado></app-boas-vindas-logado>
         </main>
       </div>
     } @else {

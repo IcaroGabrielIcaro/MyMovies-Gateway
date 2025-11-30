@@ -120,8 +120,7 @@ public class GatewayMovieController {
                         @Parameter(description = "Filtrar por ano") @RequestParam(required = false) Integer ano,
                         @Parameter(description = "Filtrar por duração") @RequestParam(required = false) Integer duracao,
                         @Parameter(description = "Filtrar por favorito") @RequestParam(required = false) Boolean favorito,
-                        @AuthenticationPrincipal Jwt jwt) {
-                Long idUsuario = Long.valueOf(jwt.getClaim("id_usuario").toString());
+                        @Parameter(description = "Filtrar por id do usuário") @RequestParam(required = false) Long idUsuario) {
                 List<MovieResponse> filmes = client.listarComFiltros(nome, diretor, genero, nacionalidade, ano,
                                 idUsuario, duracao, favorito);
 
