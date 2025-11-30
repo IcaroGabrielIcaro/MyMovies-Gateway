@@ -20,19 +20,7 @@
     @if (!carregando && movies.length > 0) {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @for (movie of movies; track movie.id) {
-          <div
-            class="bg-slate-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition cursor-pointer"
-          >
-            <img
-              [src]="movie.poster || movie.foto"
-              [alt]="movie.nome"
-              class="w-full h-64 object-cover"
-            />
-            <div class="p-3 text-center">
-              <p class="font-bold truncate">{{ movie.nome }}</p>
-              <p class="text-sm opacity-60">{{ movie.nacionalidade }}</p>
-            </div>
-          </div>
+          <app-card-filme [movie]="movie"></app-card-filme>
         }
       </div>
     }

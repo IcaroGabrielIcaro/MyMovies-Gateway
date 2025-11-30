@@ -4,10 +4,11 @@ import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { CommonModule } from "@angular/common";
 import { FiltroRequest } from "../../models/movie/FiltroRequest.model";
 import { Field, form } from "@angular/forms/signals";
+import { CardFilmeComponent } from "./card-filme.component";
 
 @Component({
     selector: 'app-lista-filme',
-    imports: [Field, CommonModule],
+    imports: [Field, CommonModule, CardFilmeComponent],
     templateUrl: 'lista-filme.component.html',
 })
 export class ListaFilmeComponent {
