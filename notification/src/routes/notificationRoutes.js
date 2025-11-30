@@ -7,6 +7,8 @@ const router = express.Router();
 router.post('/notify', (req, res) => {
   const event = new NotificationEvent(req.body);
 
+  console.log("📩 Evento recebido:", event);
+
   if (!event.isValid()) {
     return res.status(400).json({
       error: 'Evento inválido'
