@@ -15,7 +15,7 @@ export class MovieService {
 
     inserir(req: MovieRequest): Observable<MovieResponse> {
         return this._httpClient
-            .post<any>(`${environment.apiUrl}/movies/`, req)
+            .post<any>(`${environment.apiUrl}/movies`, req)
             .pipe(
                 map(res => {
                     const { _links, ...movie } = res;

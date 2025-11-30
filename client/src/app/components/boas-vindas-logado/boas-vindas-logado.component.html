@@ -1,7 +1,7 @@
 <div class="relative w-full h-[70vh] bg-slate-950 overflow-hidden">
 
     <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out"
-        [style.background-image]="'url(' + mainBannerUrl + ')'">
+        [style.background-image]="'url(' + mainBannerUrl() + ')'">
     </div>
 
     <div class="absolute inset-0 bg-linear-to-r 
@@ -10,7 +10,7 @@
     <div class="absolute inset-0 bg-linear-to-b 
                 from-transparent via-slate-950/80 to-slate-950 pointer-events-none"></div>
 
-    @if (slicedMovies.length > 0) {
+    @if (slicedMovies().length > 0) {
     <div class="absolute bottom-0 left-0 z-10 p-10">
         <div class="bg-linear-to-t from-black/50 to-transparent p-6 rounded-tr-2xl max-w-full">
 
@@ -19,7 +19,7 @@
             </h1>
 
             <p class="text-gray-200 text-xl font-medium drop-shadow-md">
-                {{ currentMovie?.nacionalidade || 'Nacionalidade' }} • {{ currentMovie?.ano || '----' }}
+                {{ currentMovie()?.nacionalidade || 'Nacionalidade' }} • {{ currentMovie()?.ano || '----' }}
             </p>
 
         </div>
@@ -31,11 +31,11 @@
     </button>
     }
 
-    @if (slicedMovies.length > 0) {
+    @if (slicedMovies().length > 0) {
     <div class="absolute top-1/2 right-8 -translate-y-1/2 z-20 grid grid-cols-3 grid-rows-3 gap-3"
         style="height: 90%; aspect-ratio: 4 / 3;">
-        @for (movie of slicedMovies; track $index) {
-        <app-filme-flutuante [movie]="movie" [index]="$index" [selectedMovieIndex]="selectedMovieIndex"
+        @for (movie of slicedMovies(); track $index) {
+        <app-filme-flutuante [movie]="movie" [index]="$index" [selectedMovieIndex]="selectedMovieIndex()"
             (trocarBanner)="trocarBanner($event.foto, $event.index)" />
         }
     </div>
@@ -79,11 +79,11 @@
 </div>
 
 <div class="mt-10 px-10 pb-10 space-y-20">
-    @if (movies.length > 0) {
-        <app-carrossel-filmes-home [filmes]="movies" titulo="Todos os Filmes"></app-carrossel-filmes-home>
+    @if (movies().length > 0) {
+        <app-carrossel-filmes-home [filmes]="movies()" titulo="Todos os Filmes"></app-carrossel-filmes-home>
     }
 
-    @if (myMovies.length > 0) {
-        <app-carrossel-filmes-home [filmes]="myMovies" titulo="Meus Filmes"></app-carrossel-filmes-home>
+    @if (myMovies().length > 0) {
+        <app-carrossel-filmes-home [filmes]="myMovies()" titulo="Meus Filmes"></app-carrossel-filmes-home>
     }
 </div>

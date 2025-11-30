@@ -1,8 +1,9 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, EventEmitter, inject, Output, signal } from "@angular/core";
 import { MovieService } from "../../services/movie/movie.service";
 import { Genero, MovieRequest } from "../../models/movie/MovieRequest.model";
 import { Field, form, maxLength, minLength, required } from "@angular/forms/signals";
 import { CommonModule } from "@angular/common";
+import { MovieEventsService } from "../../services/movie/movie-events.service";
 
 @Component({
     selector: 'app-criar-filme',
@@ -11,6 +12,9 @@ import { CommonModule } from "@angular/common";
 })
 export class CriarFilmeComponent {
     private readonly _movieService = inject(MovieService);
+    private readonly _movieEventService = inject(MovieEventsService);
+
+    @Output() fechar = new EventEmitter<void>();
 
     previewFoto: string | null = null;
     previewPoster: string | null = null;
@@ -45,6 +49,8 @@ export class CriarFilmeComponent {
             this._movieService.inserir(req).subscribe({
                 next: (filme) => {
                     console.log("criado com sucesso", filme)
+                    this._movieEventService.filmeCriado.next();
+                    this.fechar.emit();
                 },
                 error: (err) => {
                     console.log("Erro na criação:", err)

@@ -5,27 +5,15 @@
 
     <h1 class="text-4xl font-bold mb-8">Lista de Filmes</h1>
 
-    @if (carregando) {
-      <div class="text-center text-xl opacity-70 mt-20">
-        🔄 Carregando filmes...
-      </div>
-    }
-
-    @if (erro) {
-      <div class="text-center text-red-400 mt-20">
-        ❌ Erro ao carregar filmes.
-      </div>
-    }
-
-    @if (!carregando && movies.length > 0) {
+    @if (movies().length > 0) {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        @for (movie of movies; track movie.id) {
+        @for (movie of movies(); track movie.id) {
           <app-card-filme [movie]="movie"></app-card-filme>
         }
       </div>
     }
 
-    @if (!carregando && movies.length === 0) {
+    @if (movies().length === 0) {
       <div class="text-center text-xl opacity-60 mt-20">
         Nenhum filme encontrado com esses filtros.
       </div>

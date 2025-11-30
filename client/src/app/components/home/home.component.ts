@@ -19,6 +19,7 @@ import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
     templateUrl: `home.component.html`
 })
 export class HomeComponent {
+
     isLogged = false;
     currentPath = '/';
     showMovieForm = false;

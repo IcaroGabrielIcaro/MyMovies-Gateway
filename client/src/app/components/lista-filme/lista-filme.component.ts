@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { FiltroRequest } from "../../models/movie/FiltroRequest.model";
 import { Field, form } from "@angular/forms/signals";
 import { CardFilmeComponent } from "./card-filme.component";
+import { MovieEventsService } from "../../services/movie/movie-events.service";
 
 @Component({
     selector: 'app-lista-filme',
@@ -13,11 +14,9 @@ import { CardFilmeComponent } from "./card-filme.component";
 })
 export class ListaFilmeComponent {
     private readonly _movieService = inject(MovieService);
-    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly _movieEventService = inject(MovieEventsService);
 
-    movies: MovieResponse[] = [];
-    carregando: boolean = false;
-    erro: boolean = false;
+    movies = signal<MovieResponse[]>([]);
 
     filtroModel = signal<FiltroRequest>({
         nome: '',
@@ -30,13 +29,15 @@ export class ListaFilmeComponent {
     filtroForm = form(this.filtroModel);
 
     ngOnInit(): void {
+        this._movieEventService.filmeCriado.subscribe(() => {
+            console.log('📢 Evento recebido: filme criado. Recarregando...');
+            this.recarregarFilmes();
+        });
+
         this.buscarFilmes();
     }
 
     buscarFilmes() {
-        this.carregando = true;
-        this.erro = false;
-
         const { nome, diretor, nacionalidade, apenasMeus, idUsuario } = this.filtroModel();
 
         const params: any = {};
@@ -68,16 +69,13 @@ export class ListaFilmeComponent {
         console.log('✅ PARAMS FINAIS:', params);
 
         this._movieService.listar(params).subscribe({
-            next: (filmes) => {
-                console.log('🎬 FILMES RECEBIDOS:', filmes);
-                this.movies = filmes;
-                this.carregando = false;
-                this.cdr.detectChanges();
+            next: (data: any) => {
+                console.log('🎬 FILMES RECEBIDOS:', data);
+                const filmes = data;
+                this.movies.set(filmes);
             },
             error: (err) => {
                 console.error('❌ ERRO AO LISTAR FILMES:', err);
-                this.erro = true;
-                this.carregando = false;
             }
         });
     }
@@ -91,6 +89,11 @@ export class ListaFilmeComponent {
             apenasMeus: false,
         });
 
+        this.buscarFilmes();
+    }
+    
+    recarregarFilmes() {
+        console.log('🔄 Recarregando filmes...');
         this.buscarFilmes();
     }
 }

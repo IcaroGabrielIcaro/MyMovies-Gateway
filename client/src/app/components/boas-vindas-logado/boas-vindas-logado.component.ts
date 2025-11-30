@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import { MovieService } from "../../services/movie/movie.service";
 import { FilmeFlutuanteComponent } from "./filme-flutuante.component";
 import { CarrosselFilmesComponent } from "./carrossel-filmes.component";
+import { MovieEventsService } from "../../services/movie/movie-events.service";
 
 @Component({
     selector: 'app-boas-vindas-logado',
@@ -16,36 +17,39 @@ import { CarrosselFilmesComponent } from "./carrossel-filmes.component";
 })
 export class BoasVindasLogadoComponent {
     private readonly _movieService = inject(MovieService);
-    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly _movieEventService = inject(MovieEventsService);
 
-    movies: MovieResponse[] = [];
-    myMovies: MovieResponse[] = [];
-    slicedMovies: MovieResponse[] = [];
-    mainBannerUrl: string =
-        'https://image.tmdb.org/t/p/w500_and_h282_face/yQXfTbb5T4zVdZShGuPaZersiJc.jpg';
-
-    selectedMovieIndex: number | null = null;
-    currentMovie: MovieResponse | null = null;
+    movies = signal<MovieResponse[]>([]);
+    myMovies = signal<MovieResponse[]>([]);
+    slicedMovies = signal<MovieResponse[]>([]);
+    mainBannerUrl = signal<string>('https://image.tmdb.org/t/p/w500_and_h282_face/yQXfTbb5T4zVdZShGuPaZersiJc.jpg');
+    selectedMovieIndex = signal<number | null>(null);
+    currentMovie = signal<MovieResponse | null>(null);
 
     ngOnInit(): void {
+        this._movieEventService.filmeCriado.subscribe(() => {
+            console.log('📢 Evento recebido: filme criado. Recarregando...');
+            this.recarregarFilmes();
+        });
+
         this.buscarFilmes();
     }
 
     buscarFilmes() {
         this._movieService.listar({}).subscribe({
-            next: (filmes) => {
-                console.log('✅ FILMES RECEBIDOS NO COMPONENT:', filmes);
+            next: (dados: any) => {
+                console.log('✅ FILMES RECEBIDOS NO COMPONENT:', dados);
+                const filmes = dados;
+                this.movies.set(filmes);
 
-                this.movies = filmes;
+                this.slicedMovies.set(this.movies().slice(0, 9));
 
-                this.slicedMovies = this.movies.slice(0, 9);
-
-                const defaultMovie = this.movies.find(m => m.id === 1) || this.slicedMovies[0];
+                const defaultMovie = this.movies().find(m => m.id === 1) || this.slicedMovies()[0];
 
                 if (defaultMovie) {
-                    this.mainBannerUrl = defaultMovie.foto;
-                    this.currentMovie = defaultMovie;
-                    this.selectedMovieIndex = this.slicedMovies.findIndex(m => m.id === defaultMovie.id);
+                    this.mainBannerUrl.set(defaultMovie.foto);
+                    this.currentMovie.set(defaultMovie);
+                    this.selectedMovieIndex.set(this.slicedMovies().findIndex(m => m.id === defaultMovie.id));
                 }
 
                 const logado = Number(sessionStorage.getItem('id_usuario'));
@@ -56,18 +60,16 @@ export class BoasVindasLogadoComponent {
                 }
 
                 this._movieService.listar({idUsuario: logado}).subscribe({
-                    next: (filmex) => {
-                        this.myMovies = filmes;
-                        console.log('✅ MEUS FILMES:', this.myMovies);
-
-                        this.cdr.detectChanges();
+                    next: (data: any) => {
+                        const meusFilmes = data;
+                        this.myMovies.set(meusFilmes);
+                        console.log('✅ MEUS FILMES:', this.myMovies());
                     },
                     error: (err) => {
                         console.error('❌ ERRO AO LISTAR MEUS FILMES:', err);
                     }
                 });
 
-                this.cdr.detectChanges();
             }, error: (err) => {
                 console.error('❌ ERRO AO LISTAR FILMES:', err);
             }
@@ -75,16 +77,20 @@ export class BoasVindasLogadoComponent {
     }
 
     trocarBanner(foto: string, index: number) {
-        this.mainBannerUrl = foto;
-        this.selectedMovieIndex = index;
-        this.currentMovie = this.slicedMovies[index];
+        this.mainBannerUrl.set(foto);
+        this.selectedMovieIndex.set(index);
+        this.currentMovie.set(this.slicedMovies()[index]);
     }
 
     get movieTitle(): string {
-        if (!this.currentMovie?.nome) return 'Título do Filme';
+        if (!this.currentMovie()?.nome) return 'Título do Filme';
 
-        return this.currentMovie.nome.length > 23
-            ? this.currentMovie.nome.slice(0, 23) + '...'
-            : this.currentMovie.nome;
+        const nome = this.currentMovie()?.nome ?? '';
+        return nome.length > 23 ? nome.slice(0, 23) + '...' : nome;
+    }
+
+    recarregarFilmes() {
+        console.log('🔄 Recarregando filmes...');
+        this.buscarFilmes();
     }
 }

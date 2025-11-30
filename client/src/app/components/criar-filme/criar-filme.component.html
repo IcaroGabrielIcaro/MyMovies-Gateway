@@ -1,50 +1,44 @@
 <div class="flex justify-center items-center bg-transparent">
-  <form (ngSubmit)="criar()"
+  <div
     class="bg-slate-800/70 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-5 text-white">
-    
-    <!-- Coluna 1 -->
+
     <div class="space-y-3">
-      <!-- Nome -->
       <div>
         <label class="block text-sm font-semibold mb-1">Título</label>
         <input type="text" [field]="movieForm.nome"
           class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          placeholder="Digite o nome do filme"/>
+          placeholder="Digite o nome do filme" />
       </div>
 
-      <!-- Diretor -->
       <div>
         <label class="block text-sm font-semibold mb-1">Diretor</label>
         <input type="text" [field]="movieForm.diretor"
           class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          placeholder="Digite o nome do diretor"/>
+          placeholder="Digite o nome do diretor" />
       </div>
 
-      <!-- Ano e Duração -->
       <div class="flex gap-3">
         <div class="w-1/2">
           <label class="block text-sm font-semibold mb-1">Ano</label>
           <input type="number" [field]="movieForm.ano"
             class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-            placeholder="Ex: 2024"/>
+            placeholder="Ex: 2024" />
         </div>
         <div class="w-1/2">
           <label class="block text-sm font-semibold mb-1">Duração (min)</label>
           <input type="number" [field]="movieForm.duracao"
             class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-            placeholder="Ex: 120"/>
+            placeholder="Ex: 120" />
         </div>
       </div>
 
-      <!-- Nacionalidade -->
       <div>
         <label class="block text-sm font-semibold mb-1">Nacionalidade</label>
         <input type="text" [field]="movieForm.nacionalidade"
           class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          placeholder="Ex: Brasil, EUA..."/>
+          placeholder="Ex: Brasil, EUA..." />
       </div>
 
-      <!-- Gênero -->
       <div>
         <label class="block text-sm font-semibold mb-1">Gênero</label>
         <select [field]="movieForm.genero"
@@ -65,62 +59,53 @@
       </div>
     </div>
 
-    <!-- Coluna 2 -->
     <div class="space-y-3">
-      <!-- Nota e Data Assistida -->
       <div class="flex gap-3">
         <div class="w-1/2">
           <label class="block text-sm font-semibold mb-1">Nota</label>
           <input type="number" [field]="movieForm.nota" step="0.1"
             class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-            placeholder="0 a 10"/>
+            placeholder="0 a 10" />
         </div>
         <div class="w-1/2">
           <label class="block text-sm font-semibold mb-1">Data Assistida</label>
           <input type="date" [field]="movieForm.data_assistida"
-            class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"/>
+            class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" />
         </div>
       </div>
 
-      <!-- URL da Foto -->
       <div>
         <label class="block text-sm font-semibold mb-1">URL da Foto</label>
         <input type="url" [field]="movieForm.foto"
           class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          placeholder="URL da imagem principal"/>
+          placeholder="URL da imagem principal" />
         @if (previewFoto) {
-          <div class="mt-2 flex justify-center">
-            <img [src]="previewFoto" alt="Prévia da Foto" 
-                 class="w-40 h-28 object-cover rounded-md shadow-md"
-                 (error)="handleImageError($event)"/>
-          </div>
+        <div class="mt-2 flex justify-center">
+          <img [src]="previewFoto" alt="Prévia da Foto" class="w-40 h-28 object-cover rounded-md shadow-md"
+            (error)="handleImageError($event)" />
+        </div>
         }
       </div>
 
-      <!-- URL do Poster -->
       <div>
         <label class="block text-sm font-semibold mb-1">URL do Poster</label>
         <input type="url" [field]="movieForm.poster"
           class="w-full p-2.5 rounded-md bg-slate-900/60 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          placeholder="URL do poster"/>
+          placeholder="URL do poster" />
         @if (previewPoster) {
-          <div class="mt-2 flex justify-center">
-            <img [src]="previewPoster" alt="Prévia do Poster" 
-                 class="w-24 h-36 object-cover rounded-md shadow-md"
-                 (error)="handleImageError($event)"/>
-          </div>
+        <div class="mt-2 flex justify-center">
+          <img [src]="previewPoster" alt="Prévia do Poster" class="w-24 h-36 object-cover rounded-md shadow-md"
+            (error)="handleImageError($event)" />
+        </div>
         }
       </div>
 
-      <!-- Favorito -->
       <div class="flex items-center gap-2 mt-2">
-        <input type="checkbox" [field]="movieForm.favorito" 
-               class="w-4 h-4 accent-blue-500"/>
+        <input type="checkbox" [field]="movieForm.favorito" class="w-4 h-4 accent-blue-500" />
         <label class="text-sm">Favorito</label>
       </div>
     </div>
 
-    <!-- Review -->
     <div class="md:col-span-2 mt-3">
       <label class="block text-sm font-semibold mb-1">Review</label>
       <textarea [field]="movieForm.review" rows="3"
@@ -128,12 +113,11 @@
         placeholder="Escreva sua review..."></textarea>
     </div>
 
-    <!-- Botão Salvar -->
     <div class="md:col-span-2 flex justify-center mt-4">
-      <button type="submit"
+      <button (click)="criar()" [disabled]="!movieForm().valid()"
         class="bg-blue-500 hover:bg-blue-400 px-6 py-2.5 rounded-lg font-semibold text-white shadow-md transition-all duration-200 text-sm">
         Salvar Filme
       </button>
     </div>
-  </form>
+  </div>
 </div>
