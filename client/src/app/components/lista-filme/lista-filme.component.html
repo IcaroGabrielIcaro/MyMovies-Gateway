@@ -1,0 +1,107 @@
+<div class="min-h-screen bg-slate-950 text-white p-8 flex gap-8">
+
+  <!-- ✅ ÁREA DOS FILMES (ESQUERDA) -->
+  <main class="flex-1">
+
+    <h1 class="text-4xl font-bold mb-8">Lista de Filmes</h1>
+
+    @if (carregando) {
+      <div class="text-center text-xl opacity-70 mt-20">
+        🔄 Carregando filmes...
+      </div>
+    }
+
+    @if (erro) {
+      <div class="text-center text-red-400 mt-20">
+        ❌ Erro ao carregar filmes.
+      </div>
+    }
+
+    @if (!carregando && movies.length > 0) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (movie of movies; track movie.id) {
+          <div
+            class="bg-slate-900 rounded-xl overflow-hidden shadow-lg hover:scale-105 transition cursor-pointer"
+          >
+            <img
+              [src]="movie.poster || movie.foto"
+              [alt]="movie.nome"
+              class="w-full h-64 object-cover"
+            />
+            <div class="p-3 text-center">
+              <p class="font-bold truncate">{{ movie.nome }}</p>
+              <p class="text-sm opacity-60">{{ movie.nacionalidade }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (!carregando && movies.length === 0) {
+      <div class="text-center text-xl opacity-60 mt-20">
+        Nenhum filme encontrado com esses filtros.
+      </div>
+    }
+
+  </main>
+
+  <!-- ✅ SIDEBAR DE FILTROS (DIREITA) -->
+  <aside class="w-full max-w-xs bg-slate-900 rounded-xl p-6 shrink-0">
+
+    <h2 class="text-2xl font-bold mb-6">Filtros</h2>
+
+    <div class="flex flex-col gap-4">
+
+      <input
+        type="text"
+        placeholder="Nome do filme"
+        class="p-2 rounded bg-slate-700 text-white"
+        [field]="filtroForm.nome"
+      />
+
+      <input
+        type="text"
+        placeholder="Nome do diretor"
+        class="p-2 rounded bg-slate-700 text-white"
+        [field]="filtroForm.diretor"
+      />
+
+      <input
+        type="text"
+        placeholder="Nacionalidade"
+        class="p-2 rounded bg-slate-700 text-white"
+        [field]="filtroForm.nacionalidade"
+      />
+
+      <input
+        type="number"
+        placeholder="ID do usuário"
+        class="p-2 rounded bg-slate-700 text-white"
+        [field]="filtroForm.idUsuario"
+      />
+
+      <label class="flex items-center gap-2 mt-2">
+        <input type="checkbox" [field]="filtroForm.apenasMeus" />
+        <span>Listar apenas meus filmes</span>
+      </label>
+
+      <div class="flex gap-3 pt-4">
+        <button
+          (click)="buscarFilmes()"
+          class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded text-white w-full"
+        >
+          Filtrar
+        </button>
+
+        <button
+          (click)="limparFiltros()"
+          class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded text-white w-full"
+        >
+          Limpar
+        </button>
+      </div>
+
+    </div>
+  </aside>
+
+</div>

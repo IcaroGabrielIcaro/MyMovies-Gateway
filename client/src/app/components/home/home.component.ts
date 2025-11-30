@@ -1,23 +1,32 @@
 import { Component } from "@angular/core";
-import {  HeaderComponent } from "../header/header.component";
 import { SidebarComponent } from "../sidebar/sidebar.component";
 import { BoasVindasDeslogadoComponent } from "../boas-vindas-deslogado/boas-vindas-deslogado.component";
 import { BoasVindasLogadoComponent } from "../boas-vindas-logado/boas-vindas-logado.component";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter } from "rxjs";
+import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
 
 @Component({
     selector: 'app-home',
     imports: [
-        HeaderComponent,
         SidebarComponent,
         BoasVindasDeslogadoComponent,
         BoasVindasLogadoComponent,
+        ListaFilmeComponent,
     ],
     templateUrl: `home.component.html`
 })
 export class HomeComponent {
     isLogged = false;
+    currentPath = '/';
 
-    constructor() {
+    constructor(private router: Router) {
         this.isLogged = !!sessionStorage.getItem('token');
+    }
+
+    ngOnInit() {
+        this.currentPath = this.router.url;
+        this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+        .subscribe((e: NavigationEnd) => this.currentPath = e.urlAfterRedirects);
     }
 }
