@@ -7,8 +7,8 @@ import { MovieResponse } from '../../models/movie/MovieResponse.model';
     selector: 'app-card-filme',
     imports: [CommonModule, RouterModule],
     template: `
-    <div [routerLink]="link" class="flex flex-col items-center transition-transform hover:scale-105 cursor-pointer shrink-0">
-      <div class="w-55 h-84 rounded-xl overflow-hidden shadow-lg bg-slate-800">
+    <div class="flex flex-col items-center transition-transform hover:scale-105 cursor-pointer shrink-0">
+      <div [routerLink]="['/filmes/', movie.id]" class="w-55 h-84 rounded-xl overflow-hidden shadow-lg bg-slate-800">
         <img [src]="movie.poster" [alt]="movie.nome" class="w-full h-full object-cover object-center"/>
       </div>
     </div>
@@ -16,5 +16,4 @@ import { MovieResponse } from '../../models/movie/MovieResponse.model';
 })
 export class CardFilmeComponent {
     @Input({ required: true }) movie!: MovieResponse;
-    @Input() link: any[] = [];
 }

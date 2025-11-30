@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, inject, signal } from "@angular/core";
+import { ChangeDetectorRef, Component, computed, EventEmitter, inject, Output, signal } from "@angular/core";
 import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { CommonModule } from "@angular/common";
 import { MovieService } from "../../services/movie/movie.service";

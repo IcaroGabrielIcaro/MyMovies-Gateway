@@ -1,4 +1,4 @@
-import { Component, computed, Input, signal } from "@angular/core";
+import { Component, computed, EventEmitter, Input, Output, signal } from "@angular/core";
 import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { CardFilmeComponent } from "./card-filme.component";
 
@@ -23,7 +23,7 @@ import { CardFilmeComponent } from "./card-filme.component";
       @if(visibleMovies().length > 0) {
         <div #container class="flex justify-start gap-8 overflow-hidden">
         @for (movie of visibleMovies(); track movie.id) {
-          <app-card-filme [movie]="movie" [link]="[]"></app-card-filme>
+          <app-card-filme [movie]="movie"></app-card-filme>
           }
         </div>
       } @else {

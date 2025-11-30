@@ -6,6 +6,7 @@ import { NavigationEnd, Router } from "@angular/router";
 import { filter } from "rxjs";
 import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
 import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
+import { DetalheFilmeComponent } from "../detalhe-filme/detalhe-filme.component";
 
 @Component({
     selector: 'app-home',
@@ -15,6 +16,7 @@ import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
         BoasVindasLogadoComponent,
         ListaFilmeComponent,
         CriarFilmeComponent,
+        DetalheFilmeComponent,
     ],
     templateUrl: `home.component.html`
 })
@@ -25,6 +27,10 @@ export class HomeComponent {
     showMovieForm = false;
 
     constructor(private router: Router) {
+        this.router.events.subscribe(() => {
+            this.currentPath = this.router.url;
+        });
+
         this.isLogged = !!sessionStorage.getItem('token');
     }
 
@@ -40,5 +46,10 @@ export class HomeComponent {
 
     fecharModal() {
         this.showMovieForm = false;
+    }
+
+    getIdFromPath(): number {
+        const parts = this.currentPath.split('/');
+        return Number(parts[2]);
     }
 }

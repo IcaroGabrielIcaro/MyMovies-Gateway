@@ -1,0 +1,167 @@
+<div class="w-full min-h-screen bg-slate-950 text-white">
+
+    <!-- BANNER -->
+    <div class="relative w-full h-[80vh] overflow-hidden">
+
+        <div class="absolute inset-0 bg-cover bg-center" [style.background-image]="'url(' + movie()?.foto + ')'"></div>
+
+        <div class="absolute inset-0 bg-linear-to-r from-slate-950 via-transparent to-slate-950"></div>
+        <div class="absolute inset-0 bg-linear-to-b from-transparent via-slate-950/80 to-slate-950"></div>
+
+        <!-- GRID PRINCIPAL → 2 colunas -->
+        <div class="absolute bottom-0 left-0 w-full px-8 pb-12 grid grid-cols-3 gap-10">
+
+            <!-- =========================
+                 COLUNA ESQUERDA (2 colunas)
+            ============================== -->
+            <div class="col-span-2 flex items-end gap-8">
+
+                <!-- Poster -->
+                <div class="relative">
+                    <img [src]="movie()?.poster" alt="Poster"
+                        class="h-[420px] w-[275px] rounded-2xl shadow-2xl border border-white/10 object-cover">
+
+                    @if (ehDono() && movie()?.favorito) {
+                    <div class="absolute top-3 right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-xs shadow">
+                        ★ Favorito do dono
+                    </div>
+                    }
+                </div>
+
+                <!-- Informações -->
+                <div class="flex flex-col justify-end pb-2 max-w-[700px]">
+
+                    <!-- Título -->
+                    <h1 class="text-5xl font-bold mb-3 leading-tight drop-shadow-xl">
+                        {{ movie()?.nome }}
+                    </h1>
+
+                    <!-- Infos primárias -->
+                    <p class="text-lg text-gray-300">
+                        Ano: <span class="text-white">{{ movie()?.ano }}</span> •
+                        Gênero: <span class="text-white">{{ movie()?.genero }}</span> •
+                        Duração: <span class="text-white">{{ movie()?.duracao }} min</span>
+                    </p>
+
+                    <p class="text-lg mt-1 text-gray-300">
+                        Diretor: <span class="text-white">{{ movie()?.diretor }}</span>
+                    </p>
+
+                    <p class="text-lg mt-1 text-gray-300">
+                        Nacionalidade: <span class="text-white">{{ movie()?.nacionalidade }}</span>
+                    </p>
+
+                    <p class="text-lg mt-1 text-gray-300">
+                        Nota: <span class="text-blue-400 font-bold text-xl">{{ movie()?.nota }}/10</span>
+                    </p>
+
+                    <!-- Botão de Like LINDO e contador separado -->
+                    @if (movie()?.id) {
+
+                    <div class="flex items-center gap-4 mt-6">
+
+                        <!-- Botão redondo com ícone -->
+                        <button (click)="jaCurtiu() ? descurtir(movie()!.id!) : curtir(movie()!.id!)" class="w-12 h-12 flex items-center justify-center rounded-full
+               bg-slate-800 hover:bg-slate-700 
+               border border-slate-700 hover:border-blue-400
+               transition shadow-md hover:shadow-blue-500/20">
+
+                            <svg [attr.fill]="jaCurtiu() ? 'currentColor' : 'none'"
+                                [ngClass]="jaCurtiu() ? 'text-red-400' : 'text-white'"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6"
+                                style="stroke: currentColor; stroke-width: 1.2;">
+
+                                <path
+                                    d="M12 21s-7.5-4.73-10-8.07C-0.33 7.69 4 3 7.5 5.5 9.1 6.86 12 9.2 12 9.2s2.9-2.34 4.5-3.7C20 3 24.33 7.69 22 12.93 19.5 16.27 12 21 12 21z"
+                                    [attr.stroke]="jaCurtiu() ? 'transparent' : 'currentColor'" />
+                            </svg>
+                        </button>
+
+                        <!-- Contador separado -->
+                        <div class="flex flex-col leading-none">
+                            <span class="text-xl font-bold text-white">
+                                {{ likes().length }}
+                            </span>
+                            <span class="text-xs text-gray-400">curtidas</span>
+                        </div>
+
+                    </div>
+
+                    }
+
+
+                    <!-- Botões do dono -->
+                    @if (ehDono()) {
+                    <div class="flex gap-3 mt-4">
+
+                        <button
+                            class="bg-amber-500 hover:bg-amber-400 px-4 py-2 rounded-lg text-sm font-semibold text-slate-900 shadow-md">
+                            Atualizar
+                        </button>
+
+                        <button (click)="deletar(movie()!.id!)"
+                            class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg text-sm font-semibold shadow-md">
+                            Deletar
+                        </button>
+
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+            <!-- =========================
+                 SIDEBAR DIREITA
+            ============================== -->
+            <div class="col-span-1 flex flex-col gap-6">
+
+                <!-- Texto motivacional / tendências -->
+                <div class="bg-slate-900/80 p-6 rounded-2xl shadow-xl border border-slate-800">
+
+                    <h2 class="text-2xl font-bold text-blue-400 mb-3">
+                        Tendências deste usuário
+                    </h2>
+
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Descubra outros filmes que este usuário tem assistido e compartilhado.
+                        Explore estilos, gêneros e encontre boas recomendações.
+                    </p>
+                </div>
+
+                <!-- Lista de outros filmes -->
+                @if (outrosFilmesAmostragem().length > 0) {
+                <div class="bg-slate-900/80 p-6 rounded-2xl shadow-xl border border-slate-800">
+                    <h3 class="text-xl font-semibold text-white mb-4">
+                        Outros filmes deste usuário
+                    </h3>
+
+                    <div class="space-y-4">
+                        @for (f of outrosFilmesAmostragem(); track $index) {
+                        <div
+                            class="flex items-center gap-4 bg-slate-800 p-3 rounded-xl hover:bg-slate-700 transition cursor-pointer">
+
+                            <img [src]="f.poster || f.foto" class="w-14 h-20 object-cover rounded-lg shadow" />
+
+                            <div class="flex flex-col">
+                                <span class="text-white text-sm font-medium">{{ f.nome }}</span>
+                                <span class="text-blue-400 text-xs">{{ f.genero }}</span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Review -->
+    <div class="px-8 py-10 max-w-4xl">
+        <h2 class="text-2xl font-semibold mb-3 text-white">Review</h2>
+        <p class="text-gray-300 leading-relaxed text-lg">
+            {{ movie()?.review }}
+        </p>
+    </div>
+
+</div>
