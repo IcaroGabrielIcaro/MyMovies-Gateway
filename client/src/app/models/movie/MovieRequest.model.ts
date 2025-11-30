@@ -1,18 +1,32 @@
+export enum Genero {
+  Acao = 'acao',
+  Aventura = 'aventura',
+  Comedia = 'comedia',
+  Drama = 'drama',
+  Ficcao = 'ficcao',
+  Terror = 'terror',
+  Suspense = 'suspense',
+  Animacao = 'animacao',
+  Documentario = 'documentario',
+  Romance = 'romance',
+  Fantasia = 'fantasia',
+}
+
 export interface MovieRequest {
     nome: string;
     diretor: string;
     review: string;
-    genero: 'acao' | 'aventura' | 'comedia' | 'drama' | 'ficcao' | 'terror' | 'suspense' | 'animacao' | 'documentario' | 'romance' | 'fantasia';
+    genero: Genero;
 
-    nota: number;
+    nota: string;
 
     data_assistida: string;
 
-    duracao: number;
+    duracao: string;
 
     favorito: boolean;
     foto: string;
     poster: string;
-    ano: number;
+    ano: string;
     nacionalidade: string;
 }

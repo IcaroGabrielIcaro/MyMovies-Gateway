@@ -1,6 +1,6 @@
 <div class="flex bg-slate-950 min-h-screen">
   @if (isLogged) {
-    <app-sidebar class="fixed top-0 left-0 h-screen z-50"></app-sidebar>
+    <app-sidebar class="fixed top-0 left-0 h-screen z-50" (abrirFormulario)="abrirModal()"></app-sidebar>
   }
 
     @if (isLogged) {
@@ -24,3 +24,17 @@
       </div>
     }
 </div>
+
+@if (showMovieForm) {
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center">
+    <div class="relative w-full max-w-3xl mx-auto bg-slate-900/70 backdrop-blur-xl rounded-2xl p-6 shadow-2xl overflow-visible">
+      <button (click)="fecharModal()"
+        class="absolute -top-4 -right-4 bg-slate-800/80 hover:bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg border border-slate-700 transition-all duration-300"
+        title="Fechar">
+        ✕
+      </button>
+
+      <app-criar-filme></app-criar-filme>
+    </div>
+  </div>
+}

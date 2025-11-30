@@ -5,6 +5,7 @@ import { BoasVindasLogadoComponent } from "../boas-vindas-logado/boas-vindas-log
 import { NavigationEnd, Router } from "@angular/router";
 import { filter } from "rxjs";
 import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
+import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
 
 @Component({
     selector: 'app-home',
@@ -13,12 +14,14 @@ import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
         BoasVindasDeslogadoComponent,
         BoasVindasLogadoComponent,
         ListaFilmeComponent,
+        CriarFilmeComponent,
     ],
     templateUrl: `home.component.html`
 })
 export class HomeComponent {
     isLogged = false;
     currentPath = '/';
+    showMovieForm = false;
 
     constructor(private router: Router) {
         this.isLogged = !!sessionStorage.getItem('token');
@@ -28,5 +31,13 @@ export class HomeComponent {
         this.currentPath = this.router.url;
         this.router.events.pipe(filter(e => e instanceof NavigationEnd))
         .subscribe((e: NavigationEnd) => this.currentPath = e.urlAfterRedirects);
+    }
+
+    abrirModal() {
+        this.showMovieForm = true;
+    }
+
+    fecharModal() {
+        this.showMovieForm = false;
     }
 }
