@@ -104,7 +104,7 @@
                     @if (ehDono()) {
                     <div class="flex gap-3 mt-4">
 
-                        <button
+                        <button [routerLink]="['/filmes/' + movie()!.id! + '/atualizar']"
                             class="bg-amber-500 hover:bg-amber-400 px-4 py-2 rounded-lg text-sm font-semibold text-slate-900 shadow-md">
                             Atualizar
                         </button>

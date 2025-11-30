@@ -7,6 +7,7 @@ import { filter } from "rxjs";
 import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
 import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
 import { DetalheFilmeComponent } from "../detalhe-filme/detalhe-filme.component";
+import { AtualizarFilmeComponent } from "../atualizar-filme/atualizar-filme.component";
 
 @Component({
     selector: 'app-home',
@@ -17,6 +18,7 @@ import { DetalheFilmeComponent } from "../detalhe-filme/detalhe-filme.component"
         ListaFilmeComponent,
         CriarFilmeComponent,
         DetalheFilmeComponent,
+        AtualizarFilmeComponent
     ],
     templateUrl: `home.component.html`
 })

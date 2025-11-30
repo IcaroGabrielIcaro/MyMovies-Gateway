@@ -16,7 +16,11 @@
           }
 
           @if (currentPath.startsWith('/filmes/')) {
+            @if (currentPath.endsWith('/atualizar')) {
+              <app-atualizar-filme [id]="getIdFromPath()"></app-atualizar-filme>
+            } @else {
               <app-detalhe-filme [id]="getIdFromPath()"></app-detalhe-filme>
+            }
           }
         </main>
       </div>

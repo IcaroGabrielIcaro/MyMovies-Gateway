@@ -2,14 +2,14 @@ import { Component, inject, Input, signal } from "@angular/core";
 import { MovieService } from "../../services/movie/movie.service";
 import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { LikeResponse } from "../../models/movie/LikeResponse.model";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { CardFilmeComponent } from "../lista-filme/card-filme.component";
 import { MovieEventsService } from "../../services/movie/movie-events.service";
 
 @Component({
     selector: 'app-detalhe-filme',
-    imports: [CommonModule, CardFilmeComponent],
+    imports: [CommonModule, CardFilmeComponent, RouterLink],
     templateUrl: `detalhe-filme.component.html`
 })
 export class DetalheFilmeComponent {

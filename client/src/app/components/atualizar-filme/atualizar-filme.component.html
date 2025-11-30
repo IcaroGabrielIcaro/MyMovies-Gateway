@@ -1,0 +1,136 @@
+<div class="min-h-screen w-full bg-slate-950 text-white p-8 flex flex-col relative">
+
+    <!-- TÍTULO ESTILO LISTAGEM (AGORA MAIS “FILME”) -->
+    <h1 class="text-4xl font-bold mb-8">Atualizar Filme</h1>
+
+    <div class="items-center">
+        <button (click)="voltar()"
+            class="relative z-10 self-start flex items-center gap-2 text-slate-300 hover:text-white transition mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+            Voltar
+        </button>
+
+        <div class="relative z-10 w-full bg-slate-900/40 border border-slate-700/40 rounded-2xl p-10 shadow-xl backdrop-blur-xl 
+           shadow-blue-900/20 hover:shadow-blue-800/30 transition">
+        
+           <!-- GRID PRINCIPAL -->
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+   
+               <!-- COLUNA 1 -->
+               <div class="space-y-4">
+   
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Título</label>
+                       <input type="text" [field]="movieForm.nome" placeholder="Nome do filme" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm 
+                  focus:outline-none focus:border-blue-400 transition" />
+                   </div>
+   
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Diretor</label>
+                       <input type="text" [field]="movieForm.diretor" placeholder="Diretor" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                  focus:outline-none focus:border-blue-400 transition" />
+                   </div>
+   
+                   <!-- Ano + Duração -->
+                   <div class="flex gap-4">
+                       <div class="w-1/2">
+                           <label class="block text-xs opacity-70 mb-1">Ano</label>
+                           <input type="number" [field]="movieForm.ano" placeholder="2024" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                    focus:outline-none focus:border-blue-400 transition" />
+                       </div>
+   
+                       <div class="w-1/2">
+                           <label class="block text-xs opacity-70 mb-1">Duração</label>
+                           <input type="number" [field]="movieForm.duracao" placeholder="120" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                    focus:outline-none focus:border-blue-400 transition" />
+                       </div>
+                   </div>
+   
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Nacionalidade</label>
+                       <input type="text" [field]="movieForm.nacionalidade" placeholder="Brasil, EUA..." class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                  focus:outline-none focus:border-blue-400 transition" />
+                   </div>
+   
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Gênero</label>
+                       <select [field]="movieForm.genero" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                  focus:outline-none focus:border-blue-400 transition">
+                           <option value="">Selecione...</option>
+                           <option [value]="Genero.Acao">Ação</option>
+                           <option [value]="Genero.Aventura">Aventura</option>
+                           <option [value]="Genero.Comedia">Comédia</option>
+                           <option [value]="Genero.Drama">Drama</option>
+                           <option [value]="Genero.Ficcao">Ficção Científica</option>
+                           <option [value]="Genero.Terror">Terror</option>
+                           <option [value]="Genero.Suspense">Suspense</option>
+                           <option [value]="Genero.Animacao">Animação</option>
+                           <option [value]="Genero.Documentario">Documentário</option>
+                           <option [value]="Genero.Romance">Romance</option>
+                           <option [value]="Genero.Fantasia">Fantasia</option>
+                       </select>
+                   </div>
+   
+               </div>
+   
+               <!-- COLUNA 2 -->
+               <div class="space-y-4">
+   
+                   <!-- Nota + Data -->
+                   <div class="flex gap-4">
+                       <div class="w-1/2">
+                           <label class="block text-xs opacity-70 mb-1">Nota</label>
+                           <input type="number" step="0.1" [field]="movieForm.nota" placeholder="0–10" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                    focus:outline-none focus:border-blue-400 transition" />
+                       </div>
+   
+                       <div class="w-1/2">
+                           <label class="block text-xs opacity-70 mb-1">Data assistida</label>
+                           <input type="date" [field]="movieForm.data_assistida" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                    focus:outline-none focus:border-blue-400 transition" />
+                       </div>
+                   </div>
+   
+                   <!-- FOTO -->
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Foto</label>
+                       <input type="url" [field]="movieForm.foto" placeholder="URL da imagem" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                  focus:outline-none focus:border-blue-400 transition" />
+                   </div>
+   
+                   <!-- POSTER -->
+                   <div>
+                       <label class="block text-xs opacity-70 mb-1">Poster</label>
+                       <input type="url" [field]="movieForm.poster" placeholder="URL do poster" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+                  focus:outline-none focus:border-blue-400 transition" />
+                   </div>
+   
+                   <!-- Favorito -->
+                   <div class="flex items-center gap-2">
+                       <input type="checkbox" [field]="movieForm.favorito" class="w-4 h-4 accent-blue-500">
+                       <label class="text-xs opacity-80">Favorito</label>
+                   </div>
+   
+               </div>
+   
+               <!-- REVIEW -->
+               <div class="md:col-span-2">
+                   <label class="block text-xs opacity-70 mb-1">Review</label>
+                   <textarea rows="3" [field]="movieForm.review" placeholder="Escreva sua review..." class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm resize-none
+                focus:outline-none focus:border-blue-400 transition"></textarea>
+               </div>
+   
+               <!-- BOTÃO SALVAR -->
+               <div class="md:col-span-2 flex justify-end mt-4">
+                   <button (click)="atualizar()" [disabled]="!movieForm().valid()" class="bg-blue-500 hover:bg-blue-400 px-5 py-2 rounded-lg font-medium shadow 
+                text-white disabled:opacity-40 text-sm transition">
+                       Salvar
+                   </button>
+               </div>
+           </div>
+        </div>
+    </div>
+</div>

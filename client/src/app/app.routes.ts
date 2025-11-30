@@ -10,4 +10,5 @@ export const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'filmes', component: HomeComponent, canActivate: [authGuard]},
     { path: 'filmes/:id', component: HomeComponent, canActivate: [authGuard]},
+    { path: 'filmes/:id/atualizar', component: HomeComponent, canActivate: [authGuard]},
 ];
