@@ -5,13 +5,15 @@ import { MovieService } from "../../services/movie/movie.service";
 import { FilmeFlutuanteComponent } from "./filme-flutuante.component";
 import { CarrosselFilmesComponent } from "./carrossel-filmes.component";
 import { MovieEventsService } from "../../services/movie/movie-events.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-boas-vindas-logado',
     imports: [
         CommonModule,
         FilmeFlutuanteComponent,
-        CarrosselFilmesComponent
+        CarrosselFilmesComponent,
+        RouterLink
     ],
     templateUrl: `./boas-vindas-logado.component.html`
 })

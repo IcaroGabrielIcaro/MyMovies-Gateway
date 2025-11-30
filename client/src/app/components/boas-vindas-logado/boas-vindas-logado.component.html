@@ -25,8 +25,8 @@
         </div>
     </div>
 
-    <button
-        class="absolute top-0 left-0 z-10 m-10 bg-blue-500 text-white font-semibold px-11 py-3 rounded-lg shadow-md">
+    <button [routerLink]="['/filmes/', currentMovie()?.id]"
+        class="absolute top-0 left-0 z-10 m-10 bg-blue-500 hover:bg-blue-400 text-white font-semibold px-11 py-3 rounded-lg shadow-md cursor-pointer">
         Detalhes
     </button>
     }

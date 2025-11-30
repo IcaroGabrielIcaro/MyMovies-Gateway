@@ -4,16 +4,19 @@ import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { LikeResponse } from "../../models/movie/LikeResponse.model";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { CardFilmeComponent } from "../lista-filme/card-filme.component";
+import { MovieEventsService } from "../../services/movie/movie-events.service";
 
 @Component({
     selector: 'app-detalhe-filme',
-    imports: [CommonModule],
+    imports: [CommonModule, CardFilmeComponent],
     templateUrl: `detalhe-filme.component.html`
 })
 export class DetalheFilmeComponent {
     @Input() id!: number;
     private readonly _movieService = inject(MovieService);
     private readonly _router = inject(Router);
+    private readonly _movieEventService = inject(MovieEventsService);
 
     movie = signal<MovieResponse | null>(null);
     likes = signal<LikeResponse[]>([]);
@@ -21,6 +24,10 @@ export class DetalheFilmeComponent {
     outrosFilmesAmostragem = signal<MovieResponse[]>([]);
 
     ngOnInit() {
+        this._movieEventService.filmeCriado.subscribe(() => {
+            console.log('📢 Evento recebido: filme criado. Recarregando...');
+            this.recarregar();
+        });
         this.resgatarFilme(this.id);
         this.resgatarLikes(this.id);
     }
@@ -131,5 +138,14 @@ export class DetalheFilmeComponent {
                 console.error('Erro ao descurtir:', err);
             }
         });
+    }
+
+    voltar() {
+        this._router.navigate(['../']);
+    }
+
+    recarregar() {
+        this.resgatarFilme(this.id);
+        this.resgatarLikes(this.id);
     }
 }
