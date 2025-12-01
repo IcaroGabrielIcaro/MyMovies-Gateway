@@ -1,35 +1,54 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { NotificationSocketService } from './NotificationSocket.service';
 import { Notificacao } from '../../models/notificacao/notificacao.model';
+import { HttpClient } from '@angular/common/http';
+import { notificationEnvironment } from '../../../environment/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationService {
+    private readonly ws = inject(NotificationSocketService);
+    private readonly http = inject(HttpClient);
 
     notificacoes = signal<Notificacao[]>([]);
     naoLidas = signal(0);
 
-    constructor(private ws: NotificationSocketService) { }
-
     iniciar(usuarioId: number) {
-        const socket = this.ws.connect(usuarioId);
+        // 1) Buscar notificações persistidas
+        this.http.get<Notificacao[]>(`${notificationEnvironment.apiUrl}/api/notifications/${usuarioId}`)
+            .subscribe(lista => {
+                this.notificacoes.set(lista);
+                this.naoLidas.set(lista.filter(n => !n.lido).length);
+            });
 
-        this.ws.onMessage((msg) => {
-            const nova = {
-                ...msg,
-                lida: false
-            };
+        // 2) Abrir WebSocket
+        this.ws.connect(usuarioId);
+
+        // 3) Quando chegar notificação em tempo real
+        this.ws.onMessage(msg => {
+            const nova = { ...msg, lido: false };
 
             this.notificacoes.update(lista => [nova, ...lista]);
             this.naoLidas.update(n => n + 1);
         });
     }
 
-    marcarComoLidas() {
-        this.notificacoes.update(lista =>
-            lista.map(n => ({ ...n, lida: true }))
-        );
+    marcarComoLida(id: number) {
+        this.http.post(`${notificationEnvironment.apiUrl}/api/notifications/${id}/read`, {})
+            .subscribe(() => {
+                this.notificacoes.update(lista =>
+                    lista.map(n => n.id === id ? { ...n, lido: true } : n)
+                );
+
+                this.naoLidas.set(
+                    this.notificacoes().filter(n => !n.lido).length
+                );
+            });
+    }
+
+    marcarTodasComoLidas() {
+        this.notificacoes.update(lista => lista.map(n => ({ ...n, lido: true })));
         this.naoLidas.set(0);
     }
 }

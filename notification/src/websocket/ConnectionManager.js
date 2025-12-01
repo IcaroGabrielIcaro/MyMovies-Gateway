@@ -1,24 +1,27 @@
 class ConnectionManager {
   constructor() {
-    this.connections = new Map(); // usuarioId -> socket
+    this.connections = new Map(); // usuarioId(string) -> socket
   }
 
   addConnection(usuarioId, socket) {
-    this.connections.set(usuarioId, socket);
-    console.log(`🟢 Usuário ${usuarioId} conectado`);
+    const id = String(usuarioId);  // <--- correção
+    this.connections.set(id, socket);
+    console.log(`🟢 Usuário ${id} conectado`);
   }
 
   removeConnection(usuarioId) {
-    this.connections.delete(usuarioId);
-    console.log(`🔴 Usuário ${usuarioId} desconectado`);
+    const id = String(usuarioId); // <--- correção
+    this.connections.delete(id);
+    console.log(`🔴 Usuário ${id} desconectado`);
   }
 
   getConnection(usuarioId) {
-    return this.connections.get(usuarioId);
-  }
+    const id = String(usuarioId); // <--- correção
+    const socket = this.connections.get(id);
 
-  hasConnection(usuarioId) {
-    return this.connections.has(usuarioId);
+    console.log(`🔍 Buscando conexão do usuário ${id} →`, socket ? "ENCONTRADO" : "NÃO ENCONTRADO");
+
+    return socket;
   }
 }
 

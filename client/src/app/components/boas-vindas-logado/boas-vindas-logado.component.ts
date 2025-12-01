@@ -6,6 +6,7 @@ import { FilmeFlutuanteComponent } from "./filme-flutuante.component";
 import { CarrosselFilmesComponent } from "./carrossel-filmes.component";
 import { MovieEventsService } from "../../services/movie/movie-events.service";
 import { RouterLink } from "@angular/router";
+import { Genero } from "../../models/movie/MovieRequest.model";
 
 @Component({
     selector: 'app-boas-vindas-logado',
@@ -18,6 +19,8 @@ import { RouterLink } from "@angular/router";
     templateUrl: `./boas-vindas-logado.component.html`
 })
 export class BoasVindasLogadoComponent {
+    @Output() abrirFormulario = new EventEmitter<void>();
+
     private readonly _movieService = inject(MovieService);
     private readonly _movieEventService = inject(MovieEventsService);
 
@@ -33,7 +36,6 @@ export class BoasVindasLogadoComponent {
             console.log('📢 Evento recebido: filme criado. Recarregando...');
             this.recarregarFilmes();
         });
-
         this.buscarFilmes();
     }
 
@@ -61,7 +63,7 @@ export class BoasVindasLogadoComponent {
                     return;
                 }
 
-                this._movieService.listar({idUsuario: logado}).subscribe({
+                this._movieService.listar({ idUsuario: logado }).subscribe({
                     next: (data: any) => {
                         const meusFilmes = data;
                         this.myMovies.set(meusFilmes);
@@ -94,5 +96,9 @@ export class BoasVindasLogadoComponent {
     recarregarFilmes() {
         console.log('🔄 Recarregando filmes...');
         this.buscarFilmes();
+    }
+
+    abrir() {
+        this.abrirFormulario.emit();
     }
 }

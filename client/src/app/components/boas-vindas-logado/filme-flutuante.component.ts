@@ -1,14 +1,13 @@
 import { Component, EventEmitter, input, Input, Output } from "@angular/core";
 import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { CommonModule } from "@angular/common";
-import { RouterLink } from "@angular/router";
 
 @Component({
     selector: 'app-filme-flutuante',
     standalone: true,
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule],
     template: `
-    <div [routerLink]="['/filmes/', movie.id]"
+    <div
       class="relative w-full h-full aspect-video rounded-xl overflow-hidden cursor-pointer transition-all duration-300 ease-in-out shadow-lg"
       [ngClass]="{'scale-105': selectedMovieIndex === index, 'hover:scale-105': selectedMovieIndex !== index}"
       (click)="emitirTroca()">

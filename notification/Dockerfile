@@ -1,10 +1,11 @@
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+# instala dependências E garante sqlite3
+RUN npm install sqlite3 --save && npm install
 
 COPY . .
 

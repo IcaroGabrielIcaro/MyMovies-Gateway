@@ -1,4 +1,5 @@
 import { Injectable, signal } from "@angular/core";
+import { notificationStartEnvironment } from "../../../environment/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -8,21 +9,36 @@ export class NotificationSocketService {
     public connected = signal(false);
 
     connect(usuarioId: number) {
-        if (!usuarioId) return;
+        const url = `${notificationStartEnvironment.apiUrl}/?usuarioId=${usuarioId}`;
 
-        this.socket = new WebSocket(`ws://localhost:3003/?usuarioId=${usuarioId}`);
+        console.log("🔌 Conectando ao WebSocket:", url);
 
-        this.socket.onopen = () => this.connected.set(true);
-        this.socket.onclose = () => this.connected.set(false);
+        this.socket = new WebSocket(url);
 
-        return this.socket;
+        this.socket.onopen = () => {
+            console.log("🟢 WebSocket conectado");
+        };
+
+        this.socket.onmessage = (event) => {
+            console.log("📩 [NOTIFICAÇÃO RECEBIDA]:", event.data);
+        };
+
+        this.socket.onclose = () => {
+            console.log("🔴 WebSocket desconectado");
+        };
+
+        this.socket.onerror = (err) => {
+            console.error("⚠️ Erro no WebSocket:", err);
+        };
     }
 
     onMessage(callback: (msg: any) => void) {
         if (!this.socket) return;
 
-        this.socket.onmessage = (event) => {
-            callback(JSON.parse(event.data));
-        };
+        this.socket.addEventListener("message", (event) => {
+            try {
+                callback(JSON.parse(event.data));
+            } catch (_) { }
+        });
     }
 }

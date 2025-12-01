@@ -179,15 +179,14 @@ public class MovieClient {
 
         StatusResponse status = response.getBody();
 
-        if (status != null && "curtido".equals(status.getStatus())) {
+        if (status != null && "curtido".equals(status.getStatus())
+                && status.getCurtidorId() != status.getDestinatarioId()) {
 
             NotificationRequest notification = new NotificationRequest();
             notification.setCurtidorId(status.getCurtidorId());
             notification.setFilmeId(status.getFilmeId());
             notification.setDestinatarioId(status.getDestinatarioId());
             notification.setTipo(status.getTipo());
-
-            notificationClient.enviarNotificacao(notification);
 
             try {
                 notificationClient.enviarNotificacao(notification);

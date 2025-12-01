@@ -16,6 +16,8 @@ export class ListaFilmeComponent {
     private readonly _movieService = inject(MovieService);
     private readonly _movieEventService = inject(MovieEventsService);
 
+    mainBannerUrl = signal<string>('https://sm.ign.com/ign_br/screenshot/default/tropic-thunder-tom-cruise_bq3z.jpg');
+
     movies = signal<MovieResponse[]>([]);
 
     filtroModel = signal<FiltroRequest>({

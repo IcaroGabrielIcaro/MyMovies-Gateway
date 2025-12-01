@@ -8,23 +8,25 @@
         <!-- <app-header></app-header> -->
         <main class="flex-1 overflow-y-auto">
           @if (currentPath === '/') {
-            <app-boas-vindas-logado></app-boas-vindas-logado>
-          }
-
-          @if (currentPath === '/filmes') {
-            <app-lista-filme></app-lista-filme>
-          }
-
-          @if (currentPath.startsWith('/filmes/')) {
-            @if (currentPath.endsWith('/atualizar')) {
-              <app-atualizar-filme [id]="getIdFromPath()"></app-atualizar-filme>
+            <app-boas-vindas-logado (abrirFormulario)="abrirModal()"></app-boas-vindas-logado>
+          } @else {
+            @if (currentPath === '/filmes') {
+              <app-lista-filme></app-lista-filme>
             } @else {
-              <app-detalhe-filme [id]="getIdFromPath()"></app-detalhe-filme>
+              @if (currentPath.startsWith('/filmes/')) {
+                @if (currentPath.endsWith('/atualizar')) {
+                  <app-atualizar-filme [id]="getIdFromPath()"></app-atualizar-filme>
+                } @else {
+                  <app-detalhe-filme [id]="getIdFromPath()"></app-detalhe-filme>
+                }
+              } @else {
+                @if (currentPath === '/notificacoes') {
+                  <app-notificacao></app-notificacao>
+                } @else {
+                  <app-boas-vindas-logado (abrirFormulario)="abrirModal()"></app-boas-vindas-logado>
+                }
+              }
             }
-          }
-
-          @if (currentPath === '/notificacao') {
-            <app-notificacao></app-notificacao>
           }
         </main>
       </div>

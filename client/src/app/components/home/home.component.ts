@@ -8,7 +8,6 @@ import { ListaFilmeComponent } from "../lista-filme/lista-filme.component";
 import { CriarFilmeComponent } from "../criar-filme/criar-filme.component";
 import { DetalheFilmeComponent } from "../detalhe-filme/detalhe-filme.component";
 import { AtualizarFilmeComponent } from "../atualizar-filme/atualizar-filme.component";
-import { NotificationSocketService } from "../../services/notification/NotificationSocket.service";
 import { NotificationService } from "../../services/notification/Notification.service";
 import { NotificacoesComponent } from "../notificacoes/notificacoes.component";
 
@@ -27,13 +26,18 @@ import { NotificacoesComponent } from "../notificacoes/notificacoes.component";
     templateUrl: `home.component.html`
 })
 export class HomeComponent {
-    private readonly _socketService = inject(NotificationSocketService)
+    private readonly _notificationService = inject(NotificationService);
+    private readonly router = inject(Router);
 
     isLogged = false;
     currentPath = '/';
     showMovieForm = false;
 
-    constructor(private router: Router, private notif: NotificationService) {
+    ngOnInit() {
+        this.currentPath = this.router.url;
+        this.router.events.pipe(filter(e => e instanceof NavigationEnd))
+        .subscribe((e: NavigationEnd) => this.currentPath = e.urlAfterRedirects);
+
         this.router.events.subscribe(() => {
             this.currentPath = this.router.url;
         });
@@ -43,14 +47,8 @@ export class HomeComponent {
         const idUsuario = Number(sessionStorage.getItem('id_usuario'));
 
         if (idUsuario) {
-            this.notif.iniciar(idUsuario);
+            this._notificationService.iniciar(idUsuario);
         }
-    }
-
-    ngOnInit() {
-        this.currentPath = this.router.url;
-        this.router.events.pipe(filter(e => e instanceof NavigationEnd))
-        .subscribe((e: NavigationEnd) => this.currentPath = e.urlAfterRedirects);
     }
 
     abrirModal() {

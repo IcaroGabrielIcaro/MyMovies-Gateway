@@ -1,33 +1,90 @@
-<div class="min-h-screen bg-slate-950 text-white p-8">
+<div class="relative w-full h-[75vh] bg-slate-950 overflow-hidden">
 
-    <h1 class="text-4xl font-bold mb-6">Notificações</h1>
+    <!-- BANNER DINÂMICO -->
+    <div class="absolute inset-0 bg-cover bg-center transition-all duration-700 ease-in-out"
+        [style.background-image]="'url(' + mainBannerUrl() + ')'">
+    </div>
 
-    @if (notif.notificacoes().length === 0) {
-        <p class="opacity-70 mt-10">Nenhuma notificação ainda.</p>
-    }
+    <!-- OVERLAYS -->
+    <div class="absolute inset-0 bg-linear-to-r 
+              from-slate-900/60 via-transparent to-slate-900/60 pointer-events-none"></div>
 
-    <div class="flex flex-col gap-4">
-        @for (n of notif.notificacoes(); track n.timestamp) {
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+    <div class="absolute inset-0 bg-linear-to-b 
+              from-transparent via-slate-950/80 to-slate-950 pointer-events-none"></div>
 
-                @if (n.tipo === 'FILME_CURTIDO') {
-                    <p>
-                        <span class="text-blue-400 font-bold">{{ n.curtidorId }}</span>
-                        curtiu seu filme
-                        <span class="text-blue-300 font-semibold">#{{ n.filmeId }}</span>
-                    </p>
+    <!-- TÍTULO -->
+    <h1 class="absolute top-0 left-0 z-10 m-10 text-4xl font-bold text-white">
+        Notificações
+    </h1>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="relative z-10 mt-32 flex justify-center px-4">
+
+        <div class="w-full max-w-2xl">
+
+            <!-- ========== QUANDO TEM NOTIFICAÇÕES ========== -->
+            @if (notif.notificacoes().length > 0) {
+
+            <!-- TOPO -->
+            <div class="flex items-center justify-between mb-6
+            bg-black/50 backdrop-blur-md 
+            border border-white/10 
+            rounded-xl px-4 py-2 shadow-lg">
+
+                <p class="text-sm text-white font-semibold drop-shadow">
+                    {{ notif.naoLidas() }} não lidas
+                </p>
+
+                @if (notif.naoLidas() > 0) {
+                <button (click)="notif.marcarTodasComoLidas()" class="text-xs text-blue-400 hover:text-blue-300 
+               font-semibold transition drop-shadow">
+                    Marcar todas como lidas
+                </button>
                 }
-
-                @if (n.tipo === 'FILME_DESCURTIDO') {
-                    <p>
-                        <span class="text-red-400 font-bold">{{ n.curtidorId }}</span>
-                        removeu a curtida do seu filme
-                        <span class="text-red-300 font-semibold">#{{ n.filmeId }}</span>
-                    </p>
-                }
-
-                <p class="text-xs opacity-60 mt-1">{{ n.timestamp }}</p>
             </div>
-        }
+
+            <!-- LISTA -->
+            <div class="flex flex-col gap-3 max-h-[48vh] overflow-y-auto pr-1">
+                @for (n of notif.notificacoes(); track n.id) {
+                    <app-card-notificacao [n]="n"></app-card-notificacao>
+                }
+            </div>
+
+            }
+
+            <!-- ========== QUANDO NÃO TEM NENHUMA NOTIFICAÇÃO ========== -->
+            @if (notif.notificacoes().length === 0) {
+
+            <div class="relative text-center px-10 z-10 mt-10">
+
+                <h1 class="text-4xl font-extrabold text-white mb-6 drop-shadow-lg">
+                    Seu <span class="text-blue-400">Painel de Notificações</span>
+                </h1>
+
+                <p class="text-gray-200 text-lg leading-relaxed mb-6">
+                    É aqui que você será avisado sempre que alguém
+                    <strong class="text-white">curtir um filme seu</strong>.
+                </p>
+
+                <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                    A comunidade se movimenta o tempo todo — e cada nova interação
+                    vai aparecer aqui em tempo real.
+                </p>
+
+                <p class="text-gray-300 text-lg leading-relaxed">
+                    Por enquanto está tudo em silêncio… mas basta alguém reagir
+                    a um dos seus filmes para isso mudar.
+                </p>
+
+                <p class="text-gray-400 text-base leading-relaxed mt-6">
+                    Ah — e claro: você também pode curtir os filmes de outras pessoas
+                </p>
+
+            </div>
+
+            }
+
+        </div>
+
     </div>
 </div>

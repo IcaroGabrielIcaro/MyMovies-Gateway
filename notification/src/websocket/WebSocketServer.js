@@ -1,18 +1,19 @@
 const WebSocket = require('ws');
-const ConnectionManager = require('./ConnectionManager');
+const ConnectionManager = require('../websocket/ConnectionManager');
 
 class WebSocketServer {
+  constructor() {
+    this.wss = null;
+  }
+
   init(server) {
     this.wss = new WebSocket.Server({ server });
 
     this.wss.on('connection', (socket, request) => {
-      const params = new URLSearchParams(request.url.replace('/?', ''));
-      const usuarioId = params.get('usuarioId');
+      const url = new URL(request.url, `http://${request.headers.host}`);
+      const usuarioId = url.searchParams.get('usuarioId');
 
-      if (!usuarioId) {
-        socket.close();
-        return;
-      }
+      console.log("CONEXÃO RECEBIDA:", usuarioId);
 
       ConnectionManager.addConnection(usuarioId, socket);
 
@@ -21,7 +22,7 @@ class WebSocketServer {
       });
     });
 
-    console.log('✅ WebSocket ativo');
+    console.log("✅ WebSocket ativo e escutando conexões");
   }
 }
 
