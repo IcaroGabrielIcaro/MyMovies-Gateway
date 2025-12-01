@@ -136,4 +136,4 @@ Authorization: Bearer <token>
 
 ### Link Apresentação
 
-**[Canva](https://www.canva.com/design/DAG5dlyAd_o/kIuoQs0MXckR602osWwTuQ/edit?utm_content=DAG5dlyAd_o&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)**
+**[Canva]([https://www.canva.com/design/DAG5dlyAd_o/kIuoQs0MXckR602osWwTuQ/edit?utm_content=DAG5dlyAd_o&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton](https://www.canva.com/design/DAG6QWIUEmc/z64MLHt-g0BJKU35cMdzWA/edit?utm_content=DAG6QWIUEmc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton))**
