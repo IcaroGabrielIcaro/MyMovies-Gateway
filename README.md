@@ -1,38 +1,46 @@
-# Movie Gateway System -- Microservices + SOAP + REST + Docker
+# Movie Gateway System — Microservices + REST + WebSocket + Docker
 
-Este projeto implementa um **gateway REST** em Spring Boot que integra:
+Este projeto implementa uma *arquitetura moderna de microserviços* com:
 
--   ✔️ Um **serviço de autenticação** (Auth Service)
--   ✔️ Um **serviço SOAP** escrito em Python/Flask (Movies SOAP Service)
--   ✔️ Um **API Gateway** com HATEOAS e documentação Swagger
--   ✔️ Um **cliente web** simples em HTML/JS
--   ✔️ Toda a arquitetura orquestrada com **Docker Compose**
+-   **API Gateway em Spring Boot**
+-   **Serviço de Autenticação (Auth Service)**
+-   **Serviço de Filmes em Django REST**
+-   **Serviço de Notificações em WebSocket**
+-   **Frontend em Angular**
+-   Orquestração completa com **Docker Compose**
+-   Comunicação REST + WebSocket
+-   Autenticação via JWT
 
 ------------------------------------------------------------------------
 
 ## Arquitetura
+                        +----------------------+
+                        |       FRONTEND        |
+                        |      Angular SPA      |
+                        +-----------+-----------+
+                                    |
+                                    | HTTP (REST)
+                                    v
+                        +---------------------------+
+                        |        GATEWAY API        |
+                        |     Spring Boot (8080)    |
+                        +--------+-----------+------+
+                                 |           |
+                Autenticação     |           |     Filmes
+               (Login/Register)  |           |    (CRUD)
+                                 v           v
+                     +----------------+   +------------------------+
+                     | AUTH-SERVICE   |   |   DJANGO REST SERVICE  |
+                     | Spring Boot    |   |   Filmes / Likes       |
+                     | (8081)         |   |   (8000)               |
+                     +----------------+   +------------------------+
 
-                       +----------------------+
-                       |        CLIENTE       |
-                       |  (HTML + JS / SPA)   |
-                       +----------+-----------+
-                                  |
-                                  | HTTP Requests
-                                  v
-                       +----------------------+
-                       |     GATEWAY API      |
-                       |  Spring Boot (8080)  |
-                       +----+------------+----+
-                            |            |
-                            |            |
-     Autenticação           |            |     Operações SOAP
-    (Login / Register)      |            |       Filmes
-                            v            v
-                 +----------------+    +----------------+
-                 | AUTH-SERVICE   |    |  SOAP-SERVICE  |
-                 | Spring Boot    |    | Flask + WSDL   |
-                 | (8081)         |    | (5000)         |
-                 +----------------+    +----------------+
+        +------------------------------------------------------+
+        |        MICRO SERVIÇO DE NOTIFICAÇÕES (WebSocket)     |
+        |                        (3003)                        |
+        |   Comunicação direta com FRONT + integração Gateway  |
+        +------------------------------------------------------+
+
 
 ------------------------------------------------------------------------
 
@@ -51,11 +59,13 @@ docker compose up --build
 
 Os serviços sobem automaticamente:
 
-  Serviço        Porta      Descrição
-  -------------- ---------- ------------------------
-  Gateway        **8080**   API REST principal
-  Auth Service   **8081**   Registro/Login
-  SOAP Service   **5000**   Serviço SOAP de filmes
+| Serviço  | Porta          |     Descrição |
+|--------|------------------|--------------------------|
+| Gateway API   | `8080` | API principal (orquestra tudo)|
+| Auth Service   | `8081`    |  Login / Registro|
+| Django REST filmes   | `8000`    |  CRUD de filmes, curtidas, etc|
+| Notificações WebSocket   | `3003`    |  Notificações em tempo real|
+| Frontend Angular   | `4200`    |  Interface do usuário|
 
 ------------------------------------------------------------------------
 
@@ -77,13 +87,8 @@ Os serviços sobem automaticamente:
 | DELETE   | `/movies/{id}`         | Excluir               |
 | GET      | `/movies/{id}`         | Buscar por id         |
 | GET      | `/movies`              | Listar com filtros    |
-| GET      | `/movies/estatisticas` | Estatísticas por país |
-
-### **WSDL**
-
-| Método  | Rota     | Descrição |
-|--------|---------|--------------------------------|
-| GET    |  `/wsdl` |  Retorna o WSDL do serviço SOAP |
+| POST      | `/movies/{id}/like` | Curtir um filme |
+| DELETE      | `/movies/{id}/like` | Remover curtida de um filme |
 
 ------------------------------------------------------------------------
 
@@ -105,10 +110,11 @@ Aqui você encontra: - Descrição de cada endpoint\
 ## Estrutura do Projeto
 
     /
-    ├── authentication/     # Auth Service
-    ├── gateway/            # API Gateway
-    ├── movies/             # SOAP Service
-    ├── client/             # HTML/JS client
+    ├── authentication/     # Auth Service (Spring Boot)
+    ├── gateway/            # API Gateway (Spring Boot)
+    ├── movies/             # Django Rest Service (filmes)
+    ├── notifications/     # Microserviço WebSocket
+    ├── client/             # Angular SPA
     └── docker-compose.yml
 
 ------------------------------------------------------------------------
