@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
-    private Long id;
+public class UserRequest {
     private String username;
+    private String password;
     private String email;
     private String descricao;
     private String fotoPerfilUrl;
