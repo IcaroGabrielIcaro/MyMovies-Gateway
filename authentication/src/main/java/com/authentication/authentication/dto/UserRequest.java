@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserRequest {
     private String username;
-    private String password;
     private String email;
     private String descricao;
     private String fotoPerfilUrl;

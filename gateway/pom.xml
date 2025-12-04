@@ -88,12 +88,6 @@
 			<version>2.6.0</version>
 		</dependency>
 
-		<!-- Spring HATEOAS -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
-		</dependency>
-
 		<!-- Hibernate Validator (opcional, Boot já inclui) -->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>

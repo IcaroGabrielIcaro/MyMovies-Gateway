@@ -26,7 +26,6 @@ public class UserMapper {
     public User toEntity(UserRequest request) {
         return User.builder()
                 .username(request.getUsername())
-                .password(request.getPassword())
                 .email(request.getEmail())
                 .descricao(request.getDescricao())
                 .fotoPerfilUrl(request.getFotoPerfilUrl())

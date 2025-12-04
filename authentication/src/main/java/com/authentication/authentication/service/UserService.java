@@ -29,6 +29,8 @@ public class UserService {
         User user = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
         user.setDescricao(request.getDescricao());
         user.setFotoPerfilUrl(request.getFotoPerfilUrl());
         user.setFotoBannerUrl(request.getFotoBannerUrl());

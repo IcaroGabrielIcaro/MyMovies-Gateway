@@ -27,7 +27,7 @@ public class AuthClient {
 
     public UserResponse register(RegisterRequest req) {
         return restTemplate.postForObject(
-                BASE_URL + "/register",
+                BASE_URL + "/auth/register",
                 req,
                 UserResponse.class);
     }
@@ -35,7 +35,7 @@ public class AuthClient {
     public TokenResponse login(LoginRequest req) {
 
         TokenResponse tokenResponse = restTemplate.postForObject(
-                BASE_URL + "/login",
+                BASE_URL + "/auth/login",
                 req,
                 TokenResponse.class);
 
@@ -47,7 +47,7 @@ public class AuthClient {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<TokenInfoResponse> tokenInfoResponse = restTemplate.exchange(
-                BASE_URL + "/token-info",
+                BASE_URL + "/auth/token-info",
                 HttpMethod.GET,
                 entity,
                 TokenInfoResponse.class);
