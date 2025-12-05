@@ -1,7 +1,7 @@
 const express = require('express');
-const NotificationEvent = require('../events/NotificationEvent');
-const NotificationService = require('../services/notificationservice');
-const Notification = require('../models/Notification');
+const NotificationEvent = require('../events/notificationEvent');
+const NotificationService = require('../services/notificationService');
+const Notification = require('../models/notification');
 
 
 const router = express.Router();

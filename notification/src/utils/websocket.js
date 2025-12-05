@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const ConnectionManager = require('./ConnectionManager');
+const ConnectionManager = require('./connectionManager');
 
 class WebSocketServer {
   constructor() {

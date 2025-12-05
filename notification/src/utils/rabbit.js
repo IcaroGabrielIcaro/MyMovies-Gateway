@@ -1,5 +1,5 @@
 const amqp = require('amqplib');
-const NotificationHandler = require('../handlers/NotificationHandler');
+const NotificationHandler = require('../handlers/notificationHandler');
 
 
 class RabbitMQ {
