@@ -26,7 +26,7 @@ export class LoginComponent {
             this._authService.login(req).subscribe({
                 next: (token) => {
                     console.log('Logado com sucesso:', token);
-                    this._router.navigate(['/']);
+                    this._router.navigate(['/home']);
                 },
                 error: (err) => {
                     console.log('Erro no login:', err);

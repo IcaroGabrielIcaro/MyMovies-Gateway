@@ -14,47 +14,19 @@ export class MovieService {
     private readonly _httpClient = inject(HttpClient);
 
     inserir(req: MovieRequest): Observable<MovieResponse> {
-        return this._httpClient
-            .post<any>(`${environment.apiUrl}/movies`, req)
-            .pipe(
-                map(res => {
-                    const { _links, ...movie } = res;
-                    return movie as MovieResponse;
-                })
-            );
+        return this._httpClient.post<MovieResponse>(`${environment.apiUrl}/movies`, req);
     }
 
     atualizar(id: number, req: MovieRequest): Observable<MovieResponse> {
-        return this._httpClient
-            .put<any>(`${environment.apiUrl}/movies/${id}`, req)
-            .pipe(
-                map(res => {
-                    const { _links, ...movie } = res;
-                    return movie as MovieResponse;
-                })
-            );
+        return this._httpClient.put<MovieResponse>(`${environment.apiUrl}/movies/${id}`, req);
     }
 
-    deletar(id: number): Observable<{ message: string }> {
-        return this._httpClient
-            .delete<any>(`${environment.apiUrl}/movies/${id}`)
-            .pipe(
-                map(res => {
-                    const { _links, ...body } = res;
-                    return body as { message: string };
-                })
-            );
+    deletar(id: number) {
+        return this._httpClient.delete<void>(`${environment.apiUrl}/movies/${id}`);
     }
 
     getById(id: number): Observable<MovieResponse> {
-        return this._httpClient
-            .get<any>(`${environment.apiUrl}/movies/${id}`)
-            .pipe(
-                map(res => {
-                    const { _links, ...movie } = res;
-                    return movie as MovieResponse;
-                })
-            );
+        return this._httpClient.get<MovieResponse>(`${environment.apiUrl}/movies/${id}`);
     }
 
     listar(params: {
@@ -67,32 +39,11 @@ export class MovieService {
         favorito?: boolean;
         idUsuario?: number;
     }): Observable<MovieResponse[]> {
-        return this._httpClient
-            .get<any>(`${environment.apiUrl}/movies`, { params })
-            .pipe(
-                map(res => {
-                    const { _links, _embedded } = res;
-                    const items = _embedded?.movieResponseList || _embedded?.movies || [];
-
-                    return items.map((item: any) => {
-                        const { _links, ...movie } = item;
-                        return movie as MovieResponse;
-                    });
-                })
-            );
+        return this._httpClient.get<MovieResponse[]>(`${environment.apiUrl}/movies`, { params });
     }
 
     favoritar(id: number, favorito: boolean): Observable<MovieResponse> {
-        return this._httpClient
-            .patch<any>(`${environment.apiUrl}/movies/${id}/favorito`, null, {
-                params: { favorito }
-            })
-            .pipe(
-                map(res => {
-                    const { _links, ...movie } = res;
-                    return movie as MovieResponse;
-                })
-            );
+        return this._httpClient.patch<MovieResponse>(`${environment.apiUrl}/movies/${id}/favorito`, null, { params: { favorito }});
     }
 
     curtir(id: number): Observable<StatusResponse> {

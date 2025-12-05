@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { UserResponse } from "../../models/auth/UserResponse.model";
+import { UserResponse } from "../../models/user/UserResponse.model";
 import { RegisterRequest } from "../../models/auth/RegisterRequest.model";
 import { TokenResponse } from "../../models/auth/TokenResponse.model";
 import { LoginRequest } from "../../models/auth/LoginRequest.model";

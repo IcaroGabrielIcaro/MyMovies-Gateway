@@ -102,8 +102,8 @@ export class DetalheFilmeComponent {
         }
 
         this._movieService.deletar(id).subscribe({
-            next: (data: { message: string }) => {
-                console.log(data.message);
+            next: (data: void) => {
+                console.log("deletado com sucesso");
                 this._router.navigate(['/']);
             },
             error: (err) => {
