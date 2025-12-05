@@ -1,6 +1,15 @@
 version: "3.9"
 
 services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - mynetwork
+
   auth-service:
     container_name: auth-service
     build: ./authentication
@@ -24,12 +33,6 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@example.com
     networks:
       - mynetwork
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   notification-service:
     container_name: notification-service
@@ -38,6 +41,9 @@ services:
       - "3003:3003"
     environment:
       - PORT=3003
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - rabbitmq
     networks:
       - mynetwork
 

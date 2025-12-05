@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-# instala dependências E garante sqlite3
-RUN npm install sqlite3 --save && npm install
+RUN npm install
 
 COPY . .
 

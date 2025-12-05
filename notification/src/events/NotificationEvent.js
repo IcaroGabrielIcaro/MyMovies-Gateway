@@ -1,25 +1,16 @@
-const EventTypes = require('./EventTypes');
-
 class NotificationEvent {
-  constructor({ curtidorId, filmeId, destinatarioId, tipo }) {
-    this.curtidorId = curtidorId;
-    this.filmeId = filmeId;
-    this.destinatarioId = destinatarioId;
-    this.tipo = tipo;
-    this.timestamp = new Date().toISOString();
-  }
+    constructor(data) {
+        this.destinatarioId = data.destinatarioId;
+        this.criadorId = data.criadorId;
+        this.filmeId = data.filmeId;
+        this.tipo = data.tipo;
+    }
 
-  isValid() {
-    if (!this.curtidorId) return false;
-    if (!this.filmeId) return false;
-    if (!this.destinatarioId) return false;
-    if (!this.tipo) return false;
 
-    const tiposValidos = Object.values(EventTypes);
-    if (!tiposValidos.includes(this.tipo)) return false;
-
-    return true;
-  }
+    isValid() {
+        return this.destinatarioId && this.criadorId && this.tipo;
+    }
 }
+
 
 module.exports = NotificationEvent;
