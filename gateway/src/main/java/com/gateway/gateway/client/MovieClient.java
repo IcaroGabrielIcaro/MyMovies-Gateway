@@ -99,7 +99,17 @@ public class MovieClient {
                 body,
                 MovieResponse.class);
 
-        return response.getBody();
+        MovieResponse movie = response.getBody();
+
+        NotificationRequest notification = new NotificationRequest();
+        notification.setTipo("FILME_CRIADO");
+        notification.setFilmeId(movie.getId());
+        notification.setCriadorId(idUsuario);
+        notification.setDestinatarioId(null);
+
+        notificationClient.enviarNotificacao(notification);
+
+        return movie;
     }
 
     public MovieResponse pegar(Long id) {
@@ -183,7 +193,7 @@ public class MovieClient {
                 && status.getCurtidorId() != status.getDestinatarioId()) {
 
             NotificationRequest notification = new NotificationRequest();
-            notification.setCurtidorId(status.getCurtidorId());
+            notification.setCriadorId(status.getCurtidorId());
             notification.setFilmeId(status.getFilmeId());
             notification.setDestinatarioId(status.getDestinatarioId());
             notification.setTipo(status.getTipo());

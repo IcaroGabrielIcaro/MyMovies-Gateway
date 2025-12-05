@@ -23,6 +23,10 @@ class ConnectionManager {
 
     return socket;
   }
+
+  getAllConnections() {
+    return this.connections;
+  }
 }
 
 module.exports = new ConnectionManager();

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationRequest {
-    private Long curtidorId;
+    private Long criadorId;
     private Long filmeId;
     private Long destinatarioId;
     private String tipo;

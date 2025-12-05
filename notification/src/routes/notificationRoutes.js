@@ -6,7 +6,6 @@ const Notification = require('../models/notification');
 
 const router = express.Router();
 
-
 router.post('/notify', async (req, res) => {
     const event = new NotificationEvent(req.body);
 
