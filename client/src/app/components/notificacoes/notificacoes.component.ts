@@ -9,5 +9,5 @@ import { CardNotificacaoComponent } from "./card-notificacao.component";
 })
 export class NotificacoesComponent {
     protected readonly notif = inject(NotificationService);
-    mainBannerUrl = signal<string>('https://image.tmdb.org/t/p/w500_and_h282_face/yQXfTbb5T4zVdZShGuPaZersiJc.jpg');
+    mainBannerUrl = signal<string>('https://i.imgflip.com/1tbdv5.jpg');
 }

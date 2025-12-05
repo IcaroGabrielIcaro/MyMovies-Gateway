@@ -100,9 +100,13 @@
                     }
 
 
-                    <!-- Botões do dono -->
-                    @if (ehDono()) {
+                    <!-- =========================
+     BOTÕES DE AÇÃO
+============================= -->
                     <div class="flex gap-3 mt-4">
+
+                        <!-- ✅ SE FOR O DONO → 3 BOTÕES -->
+                        @if (ehDono()) {
 
                         <button [routerLink]="['/filmes/' + movie()!.id! + '/atualizar']"
                             class="bg-amber-500 hover:bg-amber-400 px-4 py-2 rounded-lg text-sm font-semibold text-slate-900 shadow-md">
@@ -114,8 +118,25 @@
                             Deletar
                         </button>
 
+                        <button [routerLink]="['/usuarios', movie()?.id_usuario]" class="bg-slate-800 hover:bg-blue-600
+             border border-slate-700 hover:border-blue-400
+             text-white px-4 py-2 rounded-lg text-sm font-semibold
+             transition shadow hover:shadow-blue-500/20">
+                            Meu perfil
+                        </button>
+
+                        }
+                        <!-- ✅ SE NÃO FOR O DONO → APENAS 1 BOTÃO -->
+                        @else {
+
+                        <button [routerLink]="['/usuarios', movie()?.id_usuario]" class="bg-blue-600 hover:bg-blue-500
+             px-5 py-2 rounded-lg text-sm font-semibold shadow-md">
+                            Visitar perfil do usuário
+                        </button>
+
+                        }
+
                     </div>
-                    }
 
                 </div>
             </div>
@@ -148,7 +169,7 @@
                     <div class="grid grid-cols-3 gap-4 mt-6">
 
                         @for (f of outrosFilmesAmostragem(); track $index) {
-                            <app-card-filme [movie]="f" tamanho="sm"></app-card-filme>
+                        <app-card-filme [movie]="f" tamanho="sm"></app-card-filme>
                         }
 
                     </div>

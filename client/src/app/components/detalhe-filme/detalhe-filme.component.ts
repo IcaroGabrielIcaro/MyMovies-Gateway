@@ -2,7 +2,7 @@ import { Component, inject, Input, signal } from "@angular/core";
 import { MovieService } from "../../services/movie/movie.service";
 import { MovieResponse } from "../../models/movie/MovieResponse.model";
 import { LikeResponse } from "../../models/movie/LikeResponse.model";
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { CardFilmeComponent } from "../lista-filme/card-filme.component";
 import { MovieEventsService } from "../../services/movie/movie-events.service";
@@ -13,10 +13,10 @@ import { MovieEventsService } from "../../services/movie/movie-events.service";
     templateUrl: `detalhe-filme.component.html`
 })
 export class DetalheFilmeComponent {
-    @Input() id!: number;
     private readonly _movieService = inject(MovieService);
     private readonly _router = inject(Router);
     private readonly _movieEventService = inject(MovieEventsService);
+    private readonly _route = inject(ActivatedRoute);
 
     movie = signal<MovieResponse | null>(null);
     likes = signal<LikeResponse[]>([]);
@@ -28,8 +28,12 @@ export class DetalheFilmeComponent {
             console.log('📢 Evento recebido: filme criado. Recarregando...');
             this.recarregar();
         });
-        this.resgatarFilme(this.id);
-        this.resgatarLikes(this.id);
+
+        const id = Number(this._route.snapshot.paramMap.get('id'));
+        if (id) {
+            this.resgatarFilme(id);
+            this.resgatarLikes(id);
+        }
     }
 
     resgatarFilme(id: number) {
@@ -40,7 +44,7 @@ export class DetalheFilmeComponent {
                 this.movie.set(filme);
 
                 if (filme) {
-                    this._movieService.listar({idUsuario: filme.id_usuario}).subscribe({
+                    this._movieService.listar({ idUsuario: filme.id_usuario }).subscribe({
                         next: (data: any) => {
                             const outros = data;
                             this.outrosMovies.set(outros);
@@ -141,11 +145,14 @@ export class DetalheFilmeComponent {
     }
 
     voltar() {
-        this._router.navigate(['../']);
+        this._router.navigate(['../home']);
     }
 
     recarregar() {
-        this.resgatarFilme(this.id);
-        this.resgatarLikes(this.id);
+        const id = Number(this._route.snapshot.paramMap.get('id'));
+        if (id) {
+            this.resgatarFilme(id);
+            this.resgatarLikes(id);
+        }
     }
 }

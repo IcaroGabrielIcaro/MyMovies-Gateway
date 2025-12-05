@@ -8,6 +8,8 @@ import { DetalheFilmeComponent } from './components/detalhe-filme/detalhe-filme.
 import { ListaFilmeComponent } from './components/lista-filme/lista-filme.component';
 import { AtualizarFilmeComponent } from './components/atualizar-filme/atualizar-filme.component';
 import { NotificacoesComponent } from './components/notificacoes/notificacoes.component';
+import { DetalheUsuarioComponent } from './components/detalhe-usuario/detalhar-usuario.component';
+import { AtualizarUsuarioComponent } from './components/atualizar-usuario/atualizar-usuario.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -18,4 +20,6 @@ export const routes: Routes = [
     { path: 'filmes/:id', component: DetalheFilmeComponent, canActivate: [authGuard]},
     { path: 'filmes/:id/atualizar', component: AtualizarFilmeComponent, canActivate: [authGuard]},
     { path: 'notificacoes', component: NotificacoesComponent, canActivate: [authGuard]},
+    { path: 'usuarios/:id', component: DetalheUsuarioComponent, canActivate: [authGuard]},
+    { path: 'usuarios/:id/atualizar', component: AtualizarUsuarioComponent, canActivate: [authGuard]},
 ];

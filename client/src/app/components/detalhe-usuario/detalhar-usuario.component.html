@@ -1,0 +1,249 @@
+<!-- =========================
+  CASO 1 — USUÁRIO NÃO ENCONTRADO
+============================= -->
+@if (userNotFound()) {
+
+<div class="w-full min-h-screen flex items-center justify-center bg-slate-950 text-white">
+
+  <div class="bg-slate-900 p-10 rounded-2xl shadow-xl border border-slate-800 text-center max-w-md">
+
+    <h1 class="text-3xl font-bold text-red-400 mb-4">
+      Usuário não encontrado
+    </h1>
+
+    <p class="text-gray-400 mb-6">
+      Este perfil não existe ou foi removido do sistema.
+    </p>
+
+    <button (click)="voltar()"
+      class="bg-blue-600 hover:bg-blue-500 px-6 py-2 rounded-xl text-sm font-semibold shadow-lg">
+      Voltar
+    </button>
+
+  </div>
+</div>
+
+} @else {
+
+<!-- =========================
+  PERFIL NORMAL
+============================= -->
+<div class="w-full min-h-screen bg-slate-950 text-white">
+
+  <!-- BOTÃO VOLTAR -->
+  <button class="absolute top-6 left-30 z-50 px-4 py-2 flex items-center gap-2
+      bg-slate-900/70 hover:bg-slate-900/90 backdrop-blur-md
+      border border-white/10 text-white rounded-xl
+      transition-all duration-300 shadow-lg cursor-pointer" (click)="voltar()">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+
+    Voltar
+  </button>
+
+  <!-- =========================
+      BANNER (SEMPRE EXISTE)
+  ============================== -->
+  <div class="relative w-full h-[75vh] overflow-hidden">
+
+    <div class="absolute inset-0 bg-cover bg-center"
+      [style.background-image]="'url(' + (user()?.fotoBannerUrl || fotoBanner) + ')'">
+    </div>
+
+    <div class="absolute inset-0 bg-linear-to-r from-slate-950 via-transparent to-slate-950"></div>
+    <div class="absolute inset-0 bg-linear-to-b from-transparent via-slate-950/80 to-slate-950"></div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="absolute bottom-0 left-0 w-full px-8 pb-12 grid grid-cols-3 gap-10">
+
+      <!-- =========================
+          COLUNA ESQUERDA
+      ============================== -->
+      <div class="col-span-2 flex items-end gap-8">
+
+        <!-- FOTO PERFIL -->
+        <div class="relative">
+
+          @if (user()?.fotoPerfilUrl) {
+
+          <!-- ✅ TEM FOTO -->
+          <img [src]="user()!.fotoPerfilUrl"
+            class="h-[300px] w-[300px] rounded-2xl shadow-2xl border border-white/10 object-cover">
+
+          } @else if (isOwner()) {
+
+          <!-- ✅ SEM FOTO, MAS É O DONO -->
+          <div class="h-[300px] w-[300px] rounded-2xl shadow-2xl border border-white/10 
+                flex flex-col items-center justify-center bg-slate-900 text-gray-400 text-center px-6">
+
+            <p class="text-sm">
+              Você ainda não tem foto de perfil.
+            </p>
+            <p class="text-xs mt-2">
+              Vá em configurações para adicionar uma.
+            </p>
+          </div>
+
+          } @else {
+
+          <!-- ✅ SEM FOTO, MAS NÃO É O DONO -->
+          <div class="h-[300px] w-[300px] rounded-2xl shadow-2xl border border-white/10 
+                flex flex-col items-center justify-center bg-slate-900 text-gray-500 text-center px-6">
+
+            <p class="text-sm italic">
+              Este usuário não possui foto de perfil.
+            </p>
+          </div>
+
+          }
+
+        </div>
+
+        <!-- INFORMAÇÕES -->
+        <div class="flex flex-col justify-end pb-4 max-w-[700px]">
+
+          <!-- NOME -->
+          <h1 class="text-5xl font-bold mb-3 leading-tight drop-shadow-xl">
+            {{ user()?.username }}
+          </h1>
+
+          <!-- DESCRIÇÃO -->
+          @if (user()?.descricao) {
+          <p class="text-gray-300 text-lg leading-relaxed mt-2">
+            {{ user()?.descricao }}
+          </p>
+          } @else if (isOwner()) {
+          <p class="text-gray-500 text-lg italic mt-2">
+            Você ainda não adicionou uma descrição.
+            Vá em configurações para completar seu perfil.
+          </p>
+          } @else {
+          <p class="text-gray-500 text-lg italic mt-2">
+            Este usuário não possui descrição.
+          </p>
+          }
+
+          <!-- BOTÃO CONFIGURAÇÕES -->
+          @if (isLogged() && isOwner()) {
+          <div class="mt-6">
+            <button (click)="abrirConfiguracao()"
+              class="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-xl text-sm font-semibold shadow-lg flex items-center gap-2">
+              ⚙️ Configurações do Perfil
+            </button>
+          </div>
+          }
+
+        </div>
+      </div>
+
+      <!-- =========================
+          SIDEBAR DIREITA
+============================= -->
+      <div class="col-span-1 flex flex-col gap-6">
+
+        <!-- =========================
+      GÊNEROS PREFERIDOS
+  ============================== -->
+        <div class="bg-slate-900/80 p-6 rounded-2xl shadow-xl border border-slate-800">
+
+          <h2 class="text-2xl font-bold text-blue-400 mb-4">
+            Gêneros Preferidos
+          </h2>
+
+          <!-- GÊNEROS -->
+          @if (user()?.generosPreferidos?.length) {
+          <div class="flex flex-wrap gap-2 mb-4">
+            @for (g of user()!.generosPreferidos; track $index) {
+            <span class="bg-blue-600/20 text-blue-300 px-3 py-1 rounded-full text-sm">
+              {{ g }}
+            </span>
+            }
+          </div>
+          } @else if (isOwner()) {
+          <p class="text-gray-500 text-sm italic mb-4">
+            Você ainda não selecionou seus gêneros preferidos.
+            Vá em configurações para personalizar suas notificações.
+          </p>
+          } @else {
+          <p class="text-gray-500 text-sm italic mb-4">
+            Este usuário ainda não possui gêneros preferidos públicos.
+          </p>
+          }
+
+          <!-- TEXTO FIXO -->
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Ao cadastrar seus gêneros preferidos, toda nova postagem relacionada
+            a esses gêneros será notificada automaticamente com base nos interesses.
+          </p>
+
+        </div>
+
+        <!-- =========================
+      FILMES FAVORITOS
+  ============================== -->
+        @if (filmesFavoritosSelecionados().length > 0) {
+
+        <div class="bg-slate-900/80 p-6 rounded-2xl shadow-xl border border-slate-800">
+
+          <h3 class="text-xl font-semibold text-white mb-4">
+            Filmes favoritos
+          </h3>
+
+          <div class="grid grid-cols-3 gap-4 mt-6">
+            @for (f of filmesFavoritosSelecionados(); track $index) {
+              <app-card-filme [movie]="f" tamanho="sm"></app-card-filme>
+            }
+          </div>
+
+        </div>
+
+        }
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mt-10 px-10 pb-10 space-y-20">
+    @if (ultimosFilmes().length > 0) {
+    <app-carrossel-filmes-home [filmes]="ultimosFilmes()" titulo="Últimos filmes"></app-carrossel-filmes-home>
+    }
+  </div>
+
+  <!-- ===========================
+      MODAL DE CONFIGURAÇÕES
+  ============================ -->
+  @if (showConfigurations()) {
+  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-9999">
+
+    <div class="bg-slate-900 rounded-2xl p-8 w-full max-w-md shadow-2xl border border-slate-800">
+
+      <h2 class="text-2xl font-bold mb-6 text-white">
+        Configurações do Perfil
+      </h2>
+
+      <div class="flex flex-col gap-4">
+
+        <button [routerLink]="['/usuarios/' + user()!.id + '/atualizar']"
+          class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold py-2 rounded-lg">
+          Atualizar Perfil
+        </button>
+
+        <button (click)="deletarPerfil(user()!.id)"
+          class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg">
+          Deletar Perfil
+        </button>
+
+        <button (click)="fecharConfiguracao()" class="bg-slate-700 hover:bg-slate-600 text-white py-2 rounded-lg mt-2">
+          Cancelar
+        </button>
+
+      </div>
+    </div>
+  </div>
+  }
+
+</div>
+}

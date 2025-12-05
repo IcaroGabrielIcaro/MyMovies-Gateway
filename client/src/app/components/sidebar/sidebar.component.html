@@ -69,6 +69,21 @@ l-32 -90 -3 -1193 c-2 -1157 -2 -1196 17 -1276 71 -299 297 -525 595 -596 78
         </div>
     </div>
 
+    <div [routerLink]="['/usuarios', idLogado]" class="group relative flex flex-col items-center text-white cursor-pointer w-full">
+        <div class="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-blue-500 transition-all"></div>
+        <div
+            class="flex flex-col items-center justify-center w-full h-20 bg-transparent group-hover:bg-slate-700 transition-all">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                class="w-6 h-6 fill-white group-hover:fill-blue-100 transition-all">
+                <path
+                    d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
+            </svg>
+
+            <span class="text-xs mt-1 text-white group-hover:text-blue-100 font">Perfil</span>
+        </div>
+    </div>
+
     <div routerLink="/notificacoes" class="relative w-full cursor-pointer group">
 
         <!-- BARRA LATERAL AZUL -->

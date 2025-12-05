@@ -2,7 +2,7 @@ export interface UserResponse {
     id: number;
     username: string;
     descricao: string;
-    fotoPosterUrl: string;
+    fotoPerfilUrl: string;
     fotoBannerUrl: string;
     generosPreferidos: string[];
 }

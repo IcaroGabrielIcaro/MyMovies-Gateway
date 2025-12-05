@@ -7,6 +7,7 @@ import { CarrosselFilmesComponent } from "./carrossel-filmes.component";
 import { MovieEventsService } from "../../services/movie/movie-events.service";
 import { RouterLink } from "@angular/router";
 import { Genero } from "../../models/movie/MovieRequest.model";
+import { ModalCriarFilmeService } from "../../services/movie/modal-criar-filme.service";
 
 @Component({
     selector: 'app-boas-vindas-logado',
@@ -19,8 +20,7 @@ import { Genero } from "../../models/movie/MovieRequest.model";
     templateUrl: `./boas-vindas-logado.component.html`
 })
 export class BoasVindasLogadoComponent {
-    @Output() abrirFormulario = new EventEmitter<void>();
-
+    private readonly _modalService = inject(ModalCriarFilmeService);
     private readonly _movieService = inject(MovieService);
     private readonly _movieEventService = inject(MovieEventsService);
 
@@ -99,6 +99,6 @@ export class BoasVindasLogadoComponent {
     }
 
     abrir() {
-        this.abrirFormulario.emit();
+        this._modalService.abrir();
     }
 }

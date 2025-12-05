@@ -10,6 +10,8 @@ import { NotificationService } from "../../services/notification/Notification.se
 export class SidebarComponent {
     @Output() abrirFormulario = new EventEmitter<void>();
 
+    idLogado = Number(sessionStorage.getItem('id_usuario'));
+
     constructor(public notif: NotificationService) {}
 
     abrirForm() {

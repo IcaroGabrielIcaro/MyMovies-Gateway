@@ -2,7 +2,7 @@ import { Component, inject, Input, signal } from "@angular/core";
 import { MovieService } from "../../services/movie/movie.service";
 import { Genero, MovieRequest } from "../../models/movie/MovieRequest.model";
 import { Field, form, maxLength, minLength, required } from "@angular/forms/signals";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: 'app-atualizar-filme',
@@ -10,9 +10,9 @@ import { Router } from "@angular/router";
     templateUrl: `atualizar-filme.component.html`
 })
 export class AtualizarFilmeComponent {
-    @Input() id!: number;
     private readonly _movieService = inject(MovieService);
     private readonly _router = inject(Router);
+    private readonly _route = inject(ActivatedRoute);
 
     movie = signal<MovieRequest | null>(null);
     Genero = Genero;
@@ -41,7 +41,11 @@ export class AtualizarFilmeComponent {
     });
 
     ngOnInit() {
-        this.resgatarFilme(this.id);
+        const id = Number(this._route.snapshot.paramMap.get('id'));
+
+        if (id) {
+            this.resgatarFilme(id);
+        }
     }
 
     resgatarFilme(id: number) {
@@ -78,18 +82,22 @@ export class AtualizarFilmeComponent {
     atualizar() {
         if (this.movieForm().valid()) {
             const req = this.movieModel();
-            this._movieService.atualizar(this.id, req).subscribe({
-                next: (data: any) => {
-                    console.log('atualizado', data);
-                    this._router.navigate(['/filmes/', this.id]);
-                }, error: (err) => {
-                    console.log("Erro na atualização:", err)
-                }
-            })
+            const id = Number(this._route.snapshot.paramMap.get('id'));
+
+            if (id) {
+                this._movieService.atualizar(id, req).subscribe({
+                    next: (data: any) => {
+                        console.log('atualizado', data);
+                        this._router.navigate(['/filmes/', id]);
+                    }, error: (err) => {
+                        console.log("Erro na atualização:", err)
+                    }
+                })
+            }
         }
     }
 
     voltar() {
-        this._router.navigate(['../']);
+        this._router.navigate(['../home']);
     }
 }

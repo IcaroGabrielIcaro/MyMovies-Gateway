@@ -19,11 +19,15 @@ export class UserService {
         return this._httpClient.get<UserResponse[]>(`${environment.apiUrl}/users`);
     }
 
-    atualizar(req: UserRequest, id: number): Observable<UserResponse> {
-        return this._httpClient.put<UserResponse>(`${environment.apiUrl}/users/${id}`, req);
+    atualizar(req: UserRequest, id: number, generos: string[]): Observable<UserResponse> {
+        const payload = {
+            ...req,
+            generosPreferidos: generos // ✅ ENTRA NA REQUISIÇÃO AQUI
+        };
+        return this._httpClient.put<UserResponse>(`${environment.apiUrl}/users/${id}`, payload);
     }
 
-    deletar(id: number): void {
-        this._httpClient.delete<void>(`${environment.apiUrl}/users/${id}`);
+    deletar(id: number) {
+        return this._httpClient.delete<void>(`${environment.apiUrl}/users/${id}`);
     }
 }

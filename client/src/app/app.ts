@@ -3,10 +3,14 @@ import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CriarFilmeComponent } from './components/criar-filme/criar-filme.component';
 import { NotificationService } from './services/notification/Notification.service';
+import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth/auth.service';
+import { ModalCriarFilmeService } from './services/movie/modal-criar-filme.service';
 
 @Component({
   selector: 'app-root',
   imports: [
+    CommonModule,
     RouterOutlet,
     SidebarComponent,
     CriarFilmeComponent,
@@ -16,14 +20,14 @@ import { NotificationService } from './services/notification/Notification.servic
 })
 export class App {
   private readonly _notificationService = inject(NotificationService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly modalService = inject(ModalCriarFilmeService);
 
-  isLogged = signal<boolean>(false);
-  showMovieForm = false;
+  isLogged = this.authService.isLogged;
+  showMovieForm = this.modalService.aberto;
 
   ngOnInit() {
-    this.isLogged.set(!!sessionStorage.getItem('token'));
-
     const idUsuario = Number(sessionStorage.getItem('id_usuario'));
 
     if (idUsuario) {
@@ -32,10 +36,10 @@ export class App {
   }
 
   abrirModal() {
-    this.showMovieForm = true;
+    this.modalService.abrir();
   }
 
   fecharModal() {
-    this.showMovieForm = false;
+    this.modalService.fechar();
   }
 }

@@ -1,0 +1,110 @@
+<div class="min-h-screen w-full bg-slate-950 text-white p-8 flex flex-col relative">
+
+    <!-- TÍTULO -->
+    <h1 class="text-4xl font-bold mb-8">Atualizar Perfil</h1>
+
+    <div class="items-center">
+        <button (click)="voltar()"
+            class="relative z-10 self-start flex items-center gap-2 text-slate-300 hover:text-white transition mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-6 h-6" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+            Voltar
+        </button>
+
+        <div class="relative z-10 w-full bg-slate-900/40 border border-slate-700/40 rounded-2xl p-10 shadow-xl backdrop-blur-xl 
+           shadow-blue-900/20 hover:shadow-blue-800/30 transition">
+
+            <!-- GRID PRINCIPAL -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- =========================
+                    COLUNA 1
+                ============================== -->
+                <div class="space-y-4">
+
+                    <!-- USERNAME -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">Usuário</label>
+                        <input type="text" [field]="userForm.username" placeholder="Seu nome de usuário" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm 
+                            focus:outline-none focus:border-blue-400 transition" />
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">E-mail</label>
+                        <input type="email" [field]="userForm.email" placeholder="seu@email.com" class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm 
+                            focus:outline-none focus:border-blue-400 transition" />
+                    </div>
+
+                    <!-- FOTO PERFIL -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">Foto de Perfil (URL)</label>
+                        <input type="url" [field]="userForm.fotoPerfilUrl" placeholder="https://..." class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm 
+                            focus:outline-none focus:border-blue-400 transition" />
+                    </div>
+
+                    <!-- FOTO BANNER -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">Foto de Banner (URL)</label>
+                        <input type="url" [field]="userForm.fotoBannerUrl" placeholder="https://..." class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm 
+                            focus:outline-none focus:border-blue-400 transition" />
+                    </div>
+
+                </div>
+
+                <!-- =========================
+                    COLUNA 2
+                ============================== -->
+                <div class="space-y-4">
+
+                    <!-- DESCRIÇÃO -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">Descrição</label>
+                        <textarea rows="4" [field]="userForm.descricao" placeholder="Fale um pouco sobre você..." class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm resize-none
+                            focus:outline-none focus:border-blue-400 transition"></textarea>
+                    </div>
+
+                    <!-- GÊNEROS PREFERIDOS -->
+                    <div>
+                        <label class="block text-xs opacity-70 mb-1">Gêneros Preferidos</label>
+
+                        <select multiple class="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-3 py-2 text-sm
+           focus:outline-none focus:border-blue-400 transition min-h-[140px]" (change)="onGeneroChange($event)">
+
+                            <option value="ACAO">Ação</option>
+                            <option value="AVENTURA">Aventura</option>
+                            <option value="COMEDIA">Comédia</option>
+                            <option value="DRAMA">Drama</option>
+                            <option value="FICCAO_CIENTIFICA">Ficção Científica</option>
+                            <option value="TERROR">Terror</option>
+                            <option value="SUSPENSE">Suspense</option>
+                            <option value="ANIMACAO">Animação</option>
+                            <option value="DOCUMENTARIO">Documentário</option>
+                            <option value="ROMANCE">Romance</option>
+                            <option value="FANTASIA">Fantasia</option>
+
+                        </select>
+
+                        <p class="text-gray-400 text-xs mt-1">
+                            Segure <b>Ctrl</b> ou <b>Cmd</b> para selecionar vários.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- =========================
+                    BOTÃO SALVAR
+                ============================== -->
+                <div class="md:col-span-2 flex justify-end mt-6">
+                    <button (click)="atualizar()" [disabled]="!userForm().valid()" class="bg-blue-500 hover:bg-blue-400 px-5 py-2 rounded-lg font-medium shadow 
+                        text-white disabled:opacity-40 text-sm transition">
+                        Salvar Alterações
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
