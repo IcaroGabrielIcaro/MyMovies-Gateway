@@ -5,7 +5,7 @@ class Notification {
         this.criadorId = criadorId;
         this.filmeId = filmeId;
         this.tipo = tipo;
-        this.broadcast = broadcast ?? false; // <—— ADICIONADO AQUI
+        this.broadcast = broadcast ?? false;
         this.lido = false;
         this.createdAt = new Date();
     }
@@ -13,18 +13,28 @@ class Notification {
     static database = [];
 
     static async create(data) {
+        if (data.tipo === "FILME_CRIADO") {
+            data.broadcast = true;
+        }
+        const deveSalvar = data.tipo === "FILME_CURTIDO";
+
         const notification = new Notification(data);
-        this.database.push(notification);
-        console.log('💾 Notificação salva na memória');
+
+        if (deveSalvar) {
+            this.database.push(notification);
+        }
+
         return notification;
     }
 
     static async findAll({ where }) {
-        return this.database.filter(n => n.destinatarioId == where.destinatarioId);
+        return this.database.filter(
+            (n) => n.destinatarioId == where.destinatarioId
+        );
     }
 
     static async findByPk(id) {
-        return this.database.find(n => n.id === id);
+        return this.database.find((n) => n.id === id);
     }
 }
 

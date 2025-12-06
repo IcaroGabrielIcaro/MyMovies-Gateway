@@ -1,10 +1,8 @@
-const Notification = require('../models/notification');
-const WebSocketServer = require('../utils/websocket');
+const Notification = require("../models/notification");
+const WebSocketServer = require("../utils/websocket");
 
 class NotificationHandler {
   static async handle(data) {
-    console.log('🛠 Criando notificação...');
-
     const notification = await Notification.create(data);
     WebSocketServer.emitNotification(notification);
   }

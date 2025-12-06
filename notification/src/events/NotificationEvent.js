@@ -7,16 +7,11 @@ class NotificationEvent {
     }
 
     isValid() {
-
-        if (this.tipo === 'FILME_CRIADO') {
+        if (this.tipo === "FILME_CRIADO") {
             return this.criadorId != null && this.filmeId != null;
         }
 
-        const precisaDestinatario = [
-            'FILME_CURTIDO',
-        ];
-
-        if (precisaDestinatario.includes(this.tipo)) {
+        if (this.tipo === "FILME_CURTIDO") {
             return (
                 this.destinatarioId != null &&
                 this.criadorId != null &&
