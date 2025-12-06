@@ -15,6 +15,8 @@ export class AuthService {
     private readonly _httpClient = inject(HttpClient);
 
     private _token = signal<string | null>(sessionStorage.getItem('token'));
+    private _userId = signal<number | null>(null);
+    userId = this._userId.asReadonly();
     isLogged = computed(() => !!this._token() && !this.tokenEstaExpirado());
 
     register(req: RegisterRequest): Observable<UserResponse> {
@@ -29,6 +31,7 @@ export class AuthService {
                     sessionStorage.setItem('id_usuario', response.userId.toString());
 
                     this._token.set(response.token);
+                    this._userId.set(Number(response.userId));
                 })
             );
     }

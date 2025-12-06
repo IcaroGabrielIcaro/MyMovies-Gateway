@@ -34,7 +34,7 @@ export class NotificationService {
         });
     }
 
-    marcarComoLida(id: number) {
+    marcarComoLida(id: string) {
         this.http.post(`${notificationEnvironment.apiUrl}/api/notifications/${id}/read`, {})
             .subscribe(() => {
                 this.notificacoes.update(lista =>

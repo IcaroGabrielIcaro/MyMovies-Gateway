@@ -1,5 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component, effect, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { CriarFilmeComponent } from './components/criar-filme/criar-filme.component';
 import { NotificationService } from './services/notification/Notification.service';
@@ -21,18 +21,19 @@ import { ModalCriarFilmeService } from './services/movie/modal-criar-filme.servi
 export class App {
   private readonly _notificationService = inject(NotificationService);
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
   private readonly modalService = inject(ModalCriarFilmeService);
 
   isLogged = this.authService.isLogged;
-  showMovieForm = this.modalService.aberto;
+  showMovieForm = this.modalService.aberto;;
+  idUsuario = this.authService.userId;
 
-  ngOnInit() {
-    const idUsuario = Number(sessionStorage.getItem('id_usuario'));
-
-    if (idUsuario) {
-      this._notificationService.iniciar(idUsuario);
-    }
+  constructor() {
+    effect(() => {
+      const id = this.idUsuario()
+      if (id) {
+        this._notificationService.iniciar(id);
+      }
+    });
   }
 
   abrirModal() {
