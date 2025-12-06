@@ -96,7 +96,6 @@ export class DetalheUsuarioComponent {
 
     abrirConfiguracao() {
         this.showConfigurations.set(true);
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     }
 
     fecharConfiguracao() {

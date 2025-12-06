@@ -11,11 +11,14 @@ class WebSocketServer {
 
     this.wss.on("connection", async (socket, request) => {
       const url = new URL(request.url, `http://${request.headers.host}`);
+
       const usuarioId = url.searchParams.get("usuarioId");
+      const token = url.searchParams.get("token");
 
-      console.log("🔌 CONEXÃO RECEBIDA:", usuarioId);
+      console.log("🔌 CONEXÃO RECEBIDA:", usuarioId, " TOKEN:", token);
 
-      ConnectionManager.addConnection(usuarioId, socket);
+      // Agora salva socket + token
+      ConnectionManager.addConnection(usuarioId, socket, token);
 
       socket.on("close", () => {
         ConnectionManager.removeConnection(usuarioId);
@@ -27,16 +30,22 @@ class WebSocketServer {
 
   emitNotification(notification) {
     if (notification.broadcast === true) {
+      console.log('broadcast');
       const all = ConnectionManager.getAllConnections();
-      for (const [userId, socket] of all.entries()) {
-        socket.send(JSON.stringify(notification));
+
+      for (const [userId, conn] of all.entries()) {
+        if (conn?.socket) {
+          conn.socket.send(JSON.stringify(notification));
+        }
       }
       return;
     }
 
-    const socket = ConnectionManager.getConnection(notification.destinatarioId);
-    if (socket) {
-      socket.send(JSON.stringify(notification));
+    console.log('nao broadcast');
+    const conn = ConnectionManager.getConnection(notification.destinatarioId);
+
+    if (conn?.socket) {
+      conn.socket.send(JSON.stringify(notification));
     } else {
       console.log(
         `⚠️ Usuário ${notification.destinatarioId} offline → notificação não enviada`

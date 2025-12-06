@@ -9,7 +9,9 @@ export class NotificationSocketService {
     public connected = signal(false);
 
     connect(usuarioId: number) {
-        const url = `${notificationStartEnvironment.apiUrl}/?usuarioId=${usuarioId}`;
+        const token = sessionStorage.getItem("token");
+
+        const url = `${notificationStartEnvironment.apiUrl}/?usuarioId=${usuarioId}&token=${token}`;
 
         console.log("🔌 Conectando ao WebSocket:", url);
 

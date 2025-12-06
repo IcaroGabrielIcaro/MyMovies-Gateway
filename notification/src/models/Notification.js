@@ -13,9 +13,6 @@ class Notification {
     static database = [];
 
     static async create(data) {
-        if (data.tipo === "FILME_CRIADO") {
-            data.broadcast = true;
-        }
         const deveSalvar = data.tipo === "FILME_CURTIDO";
 
         const notification = new Notification(data);
